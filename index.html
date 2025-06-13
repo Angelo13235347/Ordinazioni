@@ -305,12 +305,20 @@
         .modal-content.active {
             display: block;
         }
+        .water-types {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+        .water-type {
+            flex: 1;
+        }
     </style>
 </head>
 <body>
     <!-- Splash Screen -->
     <div id="splash-screen">
-        <img id="splash-logo" src="https://github.com/Angelo13235347/Ordinazioni.git" alt="Logo Pizzeria">
+        <img id="splash-logo" src="https://raw.githubusercontent.com/tuusername/pizzeria-app/main/logo.jpg" alt="Logo Pizzeria">
         <div id="splash-text">Gestione Comande Pizzeria</div>
         <div id="splash-loading"></div>
     </div>
@@ -352,11 +360,24 @@
             <div class="menu-card">
                 <div class="menu-title">Acqua</div>
                 <div class="menu-description">Naturale/Frizzante (inclusa nel menu - gratuita)</div>
-                <div class="quantity-control">
-                    <span class="quantity-label">Quantità (bottiglie)</span>
-                    <button class="quantity-btn" onclick="changeQuantity('acqua', -1)">-</button>
-                    <span id="acqua" class="quantity-value">0</span>
-                    <button class="quantity-btn" onclick="changeQuantity('acqua', 1)">+</button>
+                
+                <div class="water-types">
+                    <div class="water-type">
+                        <div class="quantity-control">
+                            <span class="quantity-label">Naturale</span>
+                            <button class="quantity-btn" onclick="changeQuantity('acqua-naturale', -1)">-</button>
+                            <span id="acqua-naturale" class="quantity-value">0</span>
+                            <button class="quantity-btn" onclick="changeQuantity('acqua-naturale', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="water-type">
+                        <div class="quantity-control">
+                            <span class="quantity-label">Frizzante</span>
+                            <button class="quantity-btn" onclick="changeQuantity('acqua-frizzante', -1)">-</button>
+                            <span id="acqua-frizzante" class="quantity-value">0</span>
+                            <button class="quantity-btn" onclick="changeQuantity('acqua-frizzante', 1)">+</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -520,7 +541,8 @@
                 bambino: 0
             },
             drinks: {
-                acqua: 0,
+                acquaNaturale: 0,
+                acquaFrizzante: 0,
                 birraMezzo: 0,
                 birraLitro: 0,
                 cocaLattina: 0,
@@ -613,7 +635,8 @@
             currentOrder.pizzaNotes = document.getElementById('pizza-notes').value;
             
             // Salva le bevande
-            currentOrder.drinks.acqua = parseInt(document.getElementById('acqua').textContent);
+            currentOrder.drinks.acquaNaturale = parseInt(document.getElementById('acqua-naturale').textContent);
+            currentOrder.drinks.acquaFrizzante = parseInt(document.getElementById('acqua-frizzante').textContent);
             currentOrder.drinks.birraMezzo = parseInt(document.getElementById('birra-mezzo').textContent);
             currentOrder.drinks.birraLitro = parseInt(document.getElementById('birra-litro').textContent);
             currentOrder.drinks.cocaLattina = parseInt(document.getElementById('coca-lattina').textContent);
@@ -667,7 +690,8 @@
             // Bevande
             let drinksHtml = "<h3>Bevande</h3>";
             
-            const acqua = parseInt(document.getElementById('acqua').textContent);
+            const acquaNaturale = parseInt(document.getElementById('acqua-naturale').textContent);
+            const acquaFrizzante = parseInt(document.getElementById('acqua-frizzante').textContent);
             const birraMezzo = parseInt(document.getElementById('birra-mezzo').textContent);
             const birraLitro = parseInt(document.getElementById('birra-litro').textContent);
             const cocaLattina = parseInt(document.getElementById('coca-lattina').textContent);
@@ -676,8 +700,12 @@
             const vinoMezzo = parseInt(document.getElementById('vino-mezzo').textContent);
             const vinoLitro = parseInt(document.getElementById('vino-litro').textContent);
             
-            if (acqua > 0) {
-                drinksHtml += `<div class="summary-item">Acqua: ${acqua} <span class="free-item">(gratuita)</span></div>`;
+            if (acquaNaturale > 0 || acquaFrizzante > 0) {
+                drinksHtml += `<div class="summary-item">Acqua: `;
+                let acque = [];
+                if (acquaNaturale > 0) acque.push(`${acquaNaturale} Naturale`);
+                if (acquaFrizzante > 0) acque.push(`${acquaFrizzante} Frizzante`);
+                drinksHtml += acque.join(', ') + ` <span class="free-item">(gratuita)</span></div>`;
             }
             
             drinksHtml += "<h4>Bevande Extra</h4>";
@@ -789,6 +817,15 @@
                             allOrdersHtml += menus.join(', ') + `</p>`;
                         }
                         
+                        // Acqua
+                        if (order.drinks.acquaNaturale > 0 || order.drinks.acquaFrizzante > 0) {
+                            allOrdersHtml += `<p><strong>Acqua:</strong> `;
+                            let acque = [];
+                            if (order.drinks.acquaNaturale > 0) acque.push(`${order.drinks.acquaNaturale} Naturale`);
+                            if (order.drinks.acquaFrizzante > 0) acque.push(`${order.drinks.acquaFrizzante} Frizzante`);
+                            allOrdersHtml += acque.join(', ') + ` <span class="free-item">(gratuita)</span></p>`;
+                        }
+                        
                         if (order.pizzaNotes) {
                             allOrdersHtml += `<p><strong>Gusti Pizza:</strong><br>${order.pizzaNotes.replace(/\n/g, '<br>')}</p>`;
                         }
@@ -836,7 +873,7 @@
                     case 'cocaLitro': total += value * 6; break;
                     case 'vinoMezzo': total += value * 4; break;
                     case 'vinoLitro': total += value * 8; break;
-                    // L'acqua (key 'acqua') non viene aggiunta al totale
+                    // L'acqua (key 'acquaNaturale' e 'acquaFrizzante') non viene aggiunta al totale
                 }
             }
             
@@ -871,7 +908,8 @@
                     bambino: 0
                 },
                 drinks: {
-                    acqua: 0,
+                    acquaNaturale: 0,
+                    acquaFrizzante: 0,
                     birraMezzo: 0,
                     birraLitro: 0,
                     cocaLattina: 0,
@@ -897,7 +935,8 @@
             document.getElementById('max-bambino').textContent = "";
             
             // Resetta le bevande
-            document.getElementById('acqua').textContent = "0";
+            document.getElementById('acqua-naturale').textContent = "0";
+            document.getElementById('acqua-frizzante').textContent = "0";
             document.getElementById('birra-mezzo').textContent = "0";
             document.getElementById('birra-litro').textContent = "0";
             document.getElementById('coca-lattina').textContent = "0";
@@ -996,6 +1035,7 @@
                         h2 { color: #2c3e50; }
                         h3 { color: #e74c3c; margin-top: 20px; }
                         p { margin: 5px 0; }
+                        .free-item { color: #27ae60; font-weight: bold; }
                     </style>
                 </head>
                 <body>
@@ -1034,15 +1074,19 @@
             
             details += `<h4>Bevande</h4>`;
             
-            if (order.drinks.acqua > 0) {
-                details += `<div class="summary-item">Acqua: ${order.drinks.acqua} <span class="free-item">(gratuita)</span></div>`;
+            if (order.drinks.acquaNaturale > 0 || order.drinks.acquaFrizzante > 0) {
+                details += `<div class="summary-item">Acqua: `;
+                let acque = [];
+                if (order.drinks.acquaNaturale > 0) acque.push(`${order.drinks.acquaNaturale} Naturale`);
+                if (order.drinks.acquaFrizzante > 0) acque.push(`${order.drinks.acquaFrizzante} Frizzante`);
+                details += acque.join(', ') + ` <span class="free-item">(gratuita)</span></div>`;
             }
             
             details += `<h4>Bevande Extra:</h4>`;
             let hasDrinks = false;
             
             for (const [key, value] of Object.entries(order.drinks)) {
-                if (value > 0 && key !== 'acqua') {
+                if (value > 0 && key !== 'acquaNaturale' && key !== 'acquaFrizzante') {
                     hasDrinks = true;
                     let name, price;
                     switch(key) {
