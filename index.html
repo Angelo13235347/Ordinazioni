@@ -67,7 +67,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Resto del CSS */
+        /* Stili generali */
         :root {
             --primary: #2c3e50;
             --secondary: #e74c3c;
@@ -110,6 +110,10 @@
             font-size: 20px;
             border-bottom: 2px solid var(--secondary);
             padding-bottom: 8px;
+        }
+        h3 {
+            color: var(--primary);
+            margin-top: 20px;
         }
         .screen {
             padding: 20px;
@@ -160,6 +164,12 @@
         }
         .btn-info:hover {
             background-color: #2980b9;
+        }
+        .btn-success {
+            background-color: var(--success);
+        }
+        .btn-success:hover {
+            background-color: #219653;
         }
         .menu-card {
             background: var(--light);
@@ -313,12 +323,68 @@
         .water-type {
             flex: 1;
         }
+        
+        /* Nuovi stili */
+        .main-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .main-btn {
+            padding: 20px;
+            font-size: 24px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .new-order-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .view-orders-btn {
+            background-color: #2c3e50;
+            color: white;
+        }
+        
+        .main-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .edit-btn {
+            background-color: #3498db;
+        }
+        
+        .edit-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .order-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .order-section {
+            margin-bottom: 30px;
+        }
+        
+        #operator-display {
+            font-size: 16px;
+            margin-top: 5px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <!-- Splash Screen -->
     <div id="splash-screen">
-        <img id="splash-logo" src="logo.jpg" alt="logo.jpg">
+        <img id="splash-logo" src="https://github.com/Angelo13235347/Ordinazioni.git" alt="Logo Pizzeria">
         <div id="splash-text">Gestione Comande Pizzeria</div>
         <div id="splash-loading"></div>
     </div>
@@ -327,19 +393,32 @@
     <div class="container" style="display: none;">
         <header>
             <h1>Gestione Comande Pizzeria</h1>
+            <div id="operator-display"></div>
         </header>
 
-        <!-- Schermata 1: Operatore -->
-        <div id="screen-1" class="screen active">
+        <!-- Schermata principale -->
+        <div id="main-screen" class="screen active">
+            <div class="main-menu">
+                <div class="main-btn new-order-btn" onclick="startNewOrder()">
+                    NUOVA COMANDA
+                </div>
+                <div class="main-btn view-orders-btn" onclick="showOrdersScreen()">
+                    VISUALIZZA COMANDE
+                </div>
+            </div>
+        </div>
+
+        <!-- Schermata operatore (solo per primo accesso) -->
+        <div id="operator-screen" class="screen">
             <div class="form-group">
                 <label for="operator-name">Nome Operatore</label>
                 <input type="text" id="operator-name" placeholder="Inserisci il tuo nome">
             </div>
-            <button class="btn" onclick="goToTableScreen()">Inizia</button>
+            <button class="btn" onclick="setOperator()">Conferma</button>
         </div>
 
-        <!-- Schermata 2: Tavolo e Menu -->
-        <div id="screen-2" class="screen">
+        <!-- Schermata nuova comanda -->
+        <div id="new-order-screen" class="screen">
             <button class="btn summary-btn" onclick="showSummaryModal('current')">Mostra Riepilogo</button>
             
             <div class="form-group">
@@ -486,20 +565,35 @@
             <div id="menu-error" class="error"></div>
 
             <div class="button-group">
-                <button class="btn btn-secondary" onclick="showScreen(1)">Indietro</button>
+                <button class="btn btn-secondary" onclick="showScreen('main')">Annulla</button>
                 <button class="btn" onclick="goToSummaryScreen()">Salva Ordine</button>
             </div>
         </div>
 
-        <!-- Schermata 3: Storico -->
-        <div id="screen-4" class="screen">
-            <h2>Storico Ordini</h2>
+        <!-- Schermata visualizza comande -->
+        <div id="orders-screen" class="screen">
+            <h2>Gestione Comande</h2>
             <div class="button-group">
-                <button class="btn" onclick="newOrder()">Nuovo Ordine</button>
-                <button class="btn btn-secondary" onclick="showFullSummary()">Recap Completo</button>
-                <button class="btn btn-info" onclick="showSummaryModal('all')">Mostra Tutti i Riepiloghi</button>
+                <button class="btn" onclick="showScreen('main')">Torna al Menu</button>
+                <button class="btn btn-info" onclick="showFullSummary()">Recap Completo</button>
             </div>
-            <div id="orders-list" class="orders-list"></div>
+            
+            <div id="orders-management-area" class="orders-list"></div>
+        </div>
+
+        <!-- Schermata modifica comanda -->
+        <div id="edit-order-screen" class="screen">
+            <h2>Modifica Comanda - Tavolo <span id="edit-table-display"></span></h2>
+            
+            <div id="edit-order-content">
+                <!-- Contenuto dinamico -->
+            </div>
+            
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="cancelEdit()">Annulla</button>
+                <button class="btn btn-success" onclick="saveEditedOrder()">Salva Modifiche</button>
+                <button class="btn btn-info" onclick="showSummaryModal('current')">Mostra Riepilogo</button>
+            </div>
         </div>
     </div>
 
@@ -530,6 +624,7 @@
 
     <script>
         // Variabili globali
+        let currentOperator = localStorage.getItem('pizzeria-operator') || "";
         let currentOrder = {
             operator: "",
             table: "",
@@ -556,38 +651,310 @@
         };
 
         let allOrders = JSON.parse(localStorage.getItem('pizzeria-orders')) || [];
+        let currentlyEditingIndex = -1;
 
         // Mostra splash screen all'avvio
         document.addEventListener('DOMContentLoaded', () => {
-            // Simula un caricamento di 2 secondi
             setTimeout(() => {
                 document.getElementById('splash-screen').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('splash-screen').style.display = 'none';
                     document.querySelector('.container').style.display = 'block';
-                    showScreen(1);
+                    
+                    // Se l'operatore è già registrato, mostra il menu principale
+                    if (currentOperator) {
+                        showMainScreen();
+                    } else {
+                        showScreen('operator');
+                    }
                 }, 500);
             }, 2000);
         });
 
         // Funzioni di navigazione
-        function showScreen(screenNumber) {
+        function showScreen(screenName) {
             document.querySelectorAll('.screen').forEach(screen => {
                 screen.classList.remove('active');
             });
-            document.getElementById(`screen-${screenNumber}`).classList.add('active');
             
-            if (screenNumber === 4) showOrders();
+            switch(screenName) {
+                case 'main':
+                    showMainScreen();
+                    break;
+                case 'operator':
+                    document.getElementById('operator-screen').classList.add('active');
+                    break;
+                case 'new-order':
+                    resetOrder();
+                    document.getElementById('new-order-screen').classList.add('active');
+                    break;
+                case 'orders':
+                    showOrdersScreen();
+                    break;
+                case 'edit-order':
+                    document.getElementById('edit-order-screen').classList.add('active');
+                    break;
+            }
         }
 
-        function goToTableScreen() {
+        function showMainScreen() {
+            document.getElementById('main-screen').classList.add('active');
+            document.getElementById('operator-display').textContent = `Operatore: ${currentOperator}`;
+        }
+
+        function setOperator() {
             const operator = document.getElementById('operator-name').value.trim();
             if (!operator) {
                 alert("Inserisci il nome dell'operatore");
                 return;
             }
-            currentOrder.operator = operator;
-            showScreen(2);
+            currentOperator = operator;
+            localStorage.setItem('pizzeria-operator', operator);
+            showMainScreen();
+        }
+
+        function startNewOrder() {
+            currentOrder.operator = currentOperator;
+            showScreen('new-order');
+        }
+
+        function showOrdersScreen() {
+            document.getElementById('orders-screen').classList.add('active');
+            renderOrdersManagement();
+        }
+
+        // Funzione per visualizzare gli ordini con opzioni di modifica
+        function renderOrdersManagement() {
+            const container = document.getElementById('orders-management-area');
+            container.innerHTML = '';
+            
+            if (allOrders.length === 0) {
+                container.innerHTML = '<p>Nessun ordine registrato</p>';
+                return;
+            }
+            
+            // Raggruppa per tavolo
+            const tables = {};
+            allOrders.forEach((order, index) => {
+                if (!tables[order.table]) {
+                    tables[order.table] = [];
+                }
+                tables[order.table].push({...order, originalIndex: index});
+            });
+            
+            // Crea una sezione per ogni tavolo
+            for (const [table, orders] of Object.entries(tables)) {
+                const tableSection = document.createElement('div');
+                tableSection.className = 'order-card';
+                tableSection.innerHTML = `<h3>Tavolo ${table}</h3>`;
+                
+                orders.forEach(order => {
+                    const orderElement = document.createElement('div');
+                    orderElement.className = 'order-summary';
+                    
+                    let orderInfo = `
+                        <p><strong>${order.timestamp}</strong> - ${order.people} persone`;
+                    if (order.name) orderInfo += ` (${order.name})`;
+                    orderInfo += ` - Totale: €${calculateOrderTotal(order).toFixed(2)}</p>`;
+                    
+                    // Menu ordinati
+                    if (order.menus.completo > 0 || order.menus.pizza > 0 || order.menus.bambino > 0) {
+                        orderInfo += `<p><strong>Menu:</strong> `;
+                        let menus = [];
+                        if (order.menus.completo > 0) menus.push(`${order.menus.completo} Completo`);
+                        if (order.menus.pizza > 0) menus.push(`${order.menus.pizza} Solo Pizza`);
+                        if (order.menus.bambino > 0) menus.push(`${order.menus.bambino} Bambino`);
+                        orderInfo += menus.join(', ') + `</p>`;
+                    }
+                    
+                    // Pizze
+                    if (order.pizzaNotes) {
+                        orderInfo += `<p><strong>Pizze:</strong><br>${order.pizzaNotes.replace(/\n/g, '<br>')}</p>`;
+                    }
+                    
+                    // Bevande
+                    orderInfo += `<p><strong>Bevande:</strong> `;
+                    let drinks = [];
+                    if (order.drinks.acquaNaturale > 0) drinks.push(`${order.drinks.acquaNaturale} Acqua Naturale`);
+                    if (order.drinks.acquaFrizzante > 0) drinks.push(`${order.drinks.acquaFrizzante} Acqua Frizzante`);
+                    if (order.drinks.birraMezzo > 0) drinks.push(`${order.drinks.birraMezzo} Birra 0.5L`);
+                    if (order.drinks.birraLitro > 0) drinks.push(`${order.drinks.birraLitro} Birra 1L`);
+                    if (order.drinks.cocaLattina > 0) drinks.push(`${order.drinks.cocaLattina} Coca Lattina`);
+                    if (order.drinks.cocaMezzo > 0) drinks.push(`${order.drinks.cocaMezzo} Coca 0.5L`);
+                    if (order.drinks.cocaLitro > 0) drinks.push(`${order.drinks.cocaLitro} Coca 1L`);
+                    if (order.drinks.vinoMezzo > 0) drinks.push(`${order.drinks.vinoMezzo} Vino 0.5L`);
+                    if (order.drinks.vinoLitro > 0) drinks.push(`${order.drinks.vinoLitro} Vino 1L`);
+                    orderInfo += drinks.join(', ') + `</p>`;
+                    
+                    // Pulsanti azione
+                    orderInfo += `
+                        <div class="order-actions">
+                            <button class="btn" onclick="editOrder(${order.originalIndex})">Modifica</button>
+                            <button class="btn btn-secondary" onclick="deleteOrder(${order.originalIndex})">Elimina</button>
+                            <button class="btn btn-info" onclick="viewOrderDetails(${order.originalIndex})">Dettagli</button>
+                        </div>
+                    `;
+                    
+                    orderElement.innerHTML = orderInfo;
+                    tableSection.appendChild(orderElement);
+                });
+                
+                container.appendChild(tableSection);
+            }
+        }
+
+        // Funzione per modificare un ordine esistente
+        function editOrder(index) {
+            currentlyEditingIndex = index;
+            const order = allOrders[index];
+            
+            // Popola la schermata di modifica con i dati dell'ordine
+            const editContent = document.getElementById('edit-order-content');
+            document.getElementById('edit-table-display').textContent = order.table;
+            
+            editContent.innerHTML = `
+                <div class="form-group">
+                    <label for="edit-table-number">Numero Tavolo</label>
+                    <input type="text" id="edit-table-number" value="${order.table}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-table-name">Nome Prenotazione (opzionale)</label>
+                    <input type="text" id="edit-table-name" value="${order.name || ''}">
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-people-count">Numero Persone</label>
+                    <input type="number" id="edit-people-count" min="1" value="${order.people}">
+                </div>
+                
+                <div class="order-section">
+                    <h3>Menu Ordinati</h3>
+                    <p>Menu Completo: ${order.menus.completo}</p>
+                    <p>Menu Solo Pizza: ${order.menus.pizza}</p>
+                    <p>Menu Bambino: ${order.menus.bambino}</p>
+                </div>
+                
+                <div class="notes-section">
+                    <h3>Modifica Gusti Pizza</h3>
+                    <textarea id="edit-pizza-notes" rows="4" placeholder="Es: 1 Margherita, 2 Diavola, 1 Quattro Formaggi...">${order.pizzaNotes || ''}</textarea>
+                </div>
+                
+                <div class="order-section">
+                    <h3>Aggiungi Bevande Extra</h3>
+                    
+                    <div class="menu-card">
+                        <div class="menu-title">Birra alla Spina</div>
+                        <div class="quantity-control">
+                            <span class="quantity-label">Mezzo Litro (€3)</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('extra-birra-mezzo', -1)">-</button>
+                            <span id="extra-birra-mezzo" class="quantity-value">0</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('extra-birra-mezzo', 1)">+</button>
+                        </div>
+                        <div class="quantity-control" style="margin-top: 10px;">
+                            <span class="quantity-label">Un Litro (€6)</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('extra-birra-litro', -1)">-</button>
+                            <span id="extra-birra-litro" class="quantity-value">0</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('extra-birra-litro', 1)">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-card">
+                        <div class="menu-title">Coca Cola</div>
+                        <div class="quantity-control">
+                            <span class="quantity-label">Lattina (€2.5)</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('extra-coca-lattina', -1)">-</button>
+                            <span id="extra-coca-lattina" class="quantity-value">0</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('extra-coca-lattina', 1)">+</button>
+                        </div>
+                        <div class="quantity-control" style="margin-top: 10px;">
+                            <span class="quantity-label">Mezzo Litro Spina (€3)</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('extra-coca-mezzo', -1)">-</button>
+                            <span id="extra-coca-mezzo" class="quantity-value">0</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('extra-coca-mezzo', 1)">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="menu-card">
+                        <div class="menu-title">Vino alla Spina</div>
+                        <div class="quantity-control">
+                            <span class="quantity-label">Mezzo Litro (€4)</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('extra-vino-mezzo', -1)">-</button>
+                            <span id="extra-vino-mezzo" class="quantity-value">0</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('extra-vino-mezzo', 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            showScreen('edit-order');
+        }
+
+        function changeEditQuantity(item, delta) {
+            const element = document.getElementById(item);
+            let quantity = parseInt(element.textContent) + delta;
+            if (quantity < 0) quantity = 0;
+            element.textContent = quantity;
+        }
+
+        function saveEditedOrder() {
+            const order = allOrders[currentlyEditingIndex];
+            
+            // Aggiorna i dati dell'ordine con le modifiche
+            order.table = document.getElementById('edit-table-number').value;
+            order.name = document.getElementById('edit-table-name').value;
+            order.people = parseInt(document.getElementById('edit-people-count').value);
+            order.pizzaNotes = document.getElementById('edit-pizza-notes').value;
+            
+            // Aggiungi le bevande extra
+            order.drinks.birraMezzo += parseInt(document.getElementById('extra-birra-mezzo').textContent);
+            order.drinks.birraLitro += parseInt(document.getElementById('extra-birra-litro').textContent);
+            order.drinks.cocaLattina += parseInt(document.getElementById('extra-coca-lattina').textContent);
+            order.drinks.cocaMezzo += parseInt(document.getElementById('extra-coca-mezzo').textContent);
+            order.drinks.vinoMezzo += parseInt(document.getElementById('extra-vino-mezzo').textContent);
+            
+            // Aggiorna timestamp
+            order.timestamp = new Date().toLocaleString();
+            
+            // Salva le modifiche
+            localStorage.setItem('pizzeria-orders', JSON.stringify(allOrders));
+            
+            alert("Ordine modificato con successo!");
+            showScreen('orders');
+        }
+
+        function cancelEdit() {
+            currentlyEditingIndex = -1;
+            showScreen('orders');
+        }
+
+        // Funzioni per gestire le quantità nella nuova comanda
+        function changeQuantity(item, delta) {
+            const element = document.getElementById(item);
+            let quantity = parseInt(element.textContent) + delta;
+            
+            // Controlla se stiamo modificando un menu e verifica il limite di persone
+            if (item.includes('menu-')) {
+                const people = parseInt(document.getElementById('people-count').value) || 1;
+                const completo = parseInt(document.getElementById('menu-completo').textContent);
+                const pizza = parseInt(document.getElementById('menu-pizza').textContent);
+                const bambino = parseInt(document.getElementById('menu-bambino').textContent);
+                const totalSelected = completo + pizza + bambino + (item === 'menu-completo' ? delta : 0) + 
+                                    (item === 'menu-pizza' ? delta : 0) + (item === 'menu-bambino' ? delta : 0);
+                
+                if (totalSelected > people && delta > 0) {
+                    alert(`Non puoi superare il numero di persone (${people})`);
+                    return;
+                }
+            }
+            
+            if (quantity < 0) quantity = 0;
+            element.textContent = quantity;
+            
+            // Aggiorna i messaggi di limite per i menu
+            if (item.includes('menu-')) {
+                updateMaxOrders();
+            }
         }
 
         function updateMaxOrders() {
@@ -648,36 +1015,68 @@
             saveOrder();
         }
 
-        // Funzioni per gestire le quantità
-        function changeQuantity(item, delta) {
-            const element = document.getElementById(item);
-            let quantity = parseInt(element.textContent) + delta;
+        // Salva ordine
+        function saveOrder() {
+            currentOrder.timestamp = new Date().toLocaleString();
+            allOrders.push({...currentOrder});
+            localStorage.setItem('pizzeria-orders', JSON.stringify(allOrders));
             
-            // Controlla se stiamo modificando un menu e verifica il limite di persone
-            if (item.includes('menu-')) {
-                const people = parseInt(document.getElementById('people-count').value) || 1;
-                const completo = parseInt(document.getElementById('menu-completo').textContent);
-                const pizza = parseInt(document.getElementById('menu-pizza').textContent);
-                const bambino = parseInt(document.getElementById('menu-bambino').textContent);
-                const totalSelected = completo + pizza + bambino + (item === 'menu-completo' ? delta : 0) + 
-                                    (item === 'menu-pizza' ? delta : 0) + (item === 'menu-bambino' ? delta : 0);
-                
-                if (totalSelected > people && delta > 0) {
-                    alert(`Non puoi superare il numero di persone (${people})`);
-                    return;
-                }
-            }
-            
-            if (quantity < 0) quantity = 0;
-            element.textContent = quantity;
-            
-            // Aggiorna i messaggi di limite per i menu
-            if (item.includes('menu-')) {
-                updateMaxOrders();
-            }
+            alert(`Ordine per il Tavolo ${currentOrder.table} salvato correttamente!`);
+            resetOrder();
+            showScreen('orders');
         }
 
-        // Aggiorna il riepilogo
+        function resetOrder() {
+            currentOrder = {
+                operator: currentOperator,
+                table: "",
+                name: "",
+                people: 1,
+                menus: {
+                    completo: 0,
+                    pizza: 0,
+                    bambino: 0
+                },
+                drinks: {
+                    acquaNaturale: 0,
+                    acquaFrizzante: 0,
+                    birraMezzo: 0,
+                    birraLitro: 0,
+                    cocaLattina: 0,
+                    cocaMezzo: 0,
+                    cocaLitro: 0,
+                    vinoMezzo: 0,
+                    vinoLitro: 0
+                },
+                pizzaNotes: "",
+                timestamp: ""
+            };
+            
+            // Resetta i valori nell'interfaccia
+            document.getElementById('table-number').value = "";
+            document.getElementById('table-name').value = "";
+            document.getElementById('people-count').value = "1";
+            document.getElementById('menu-completo').textContent = "0";
+            document.getElementById('menu-pizza').textContent = "0";
+            document.getElementById('menu-bambino').textContent = "0";
+            document.getElementById('pizza-notes').value = "";
+            document.getElementById('max-completo').textContent = "";
+            document.getElementById('max-pizza').textContent = "";
+            document.getElementById('max-bambino').textContent = "";
+            
+            // Resetta le bevande
+            document.getElementById('acqua-naturale').textContent = "0";
+            document.getElementById('acqua-frizzante').textContent = "0";
+            document.getElementById('birra-mezzo').textContent = "0";
+            document.getElementById('birra-litro').textContent = "0";
+            document.getElementById('coca-lattina').textContent = "0";
+            document.getElementById('coca-mezzo').textContent = "0";
+            document.getElementById('coca-litro').textContent = "0";
+            document.getElementById('vino-mezzo').textContent = "0";
+            document.getElementById('vino-litro').textContent = "0";
+        }
+
+        // Funzioni per il riepilogo
         function updateSummary() {
             // Info tavolo
             let tableInfo = `<h3>Tavolo ${document.getElementById('table-number').value || '?'}`;
@@ -880,111 +1279,6 @@
             return total;
         }
 
-        // Salva ordine
-        function saveOrder() {
-            currentOrder.timestamp = new Date().toLocaleString();
-            allOrders.push({...currentOrder});
-            localStorage.setItem('pizzeria-orders', JSON.stringify(allOrders));
-            
-            alert(`Ordine per il Tavolo ${currentOrder.table} salvato correttamente!`);
-            resetOrder();
-            showScreen(4);
-        }
-
-        function newOrder() {
-            resetOrder();
-            showScreen(1);
-        }
-
-        function resetOrder() {
-            currentOrder = {
-                operator: currentOrder.operator,
-                table: "",
-                name: "",
-                people: 1,
-                menus: {
-                    completo: 0,
-                    pizza: 0,
-                    bambino: 0
-                },
-                drinks: {
-                    acquaNaturale: 0,
-                    acquaFrizzante: 0,
-                    birraMezzo: 0,
-                    birraLitro: 0,
-                    cocaLattina: 0,
-                    cocaMezzo: 0,
-                    cocaLitro: 0,
-                    vinoMezzo: 0,
-                    vinoLitro: 0
-                },
-                pizzaNotes: "",
-                timestamp: ""
-            };
-            
-            // Resetta i valori nell'interfaccia
-            document.getElementById('table-number').value = "";
-            document.getElementById('table-name').value = "";
-            document.getElementById('people-count').value = "1";
-            document.getElementById('menu-completo').textContent = "0";
-            document.getElementById('menu-pizza').textContent = "0";
-            document.getElementById('menu-bambino').textContent = "0";
-            document.getElementById('pizza-notes').value = "";
-            document.getElementById('max-completo').textContent = "";
-            document.getElementById('max-pizza').textContent = "";
-            document.getElementById('max-bambino').textContent = "";
-            
-            // Resetta le bevande
-            document.getElementById('acqua-naturale').textContent = "0";
-            document.getElementById('acqua-frizzante').textContent = "0";
-            document.getElementById('birra-mezzo').textContent = "0";
-            document.getElementById('birra-litro').textContent = "0";
-            document.getElementById('coca-lattina').textContent = "0";
-            document.getElementById('coca-mezzo').textContent = "0";
-            document.getElementById('coca-litro').textContent = "0";
-            document.getElementById('vino-mezzo').textContent = "0";
-            document.getElementById('vino-litro').textContent = "0";
-        }
-
-        // Mostra storico ordini
-        function showOrders() {
-            const container = document.getElementById('orders-list');
-            container.innerHTML = '';
-            
-            if (allOrders.length === 0) {
-                container.innerHTML = '<p>Nessun ordine registrato</p>';
-                return;
-            }
-            
-            allOrders.forEach((order, index) => {
-                const orderElement = document.createElement('div');
-                orderElement.className = 'order-card';
-                
-                let orderInfo = `
-                    <div class="order-header">
-                        <span class="order-title">Tavolo ${order.table}</span>
-                        <span class="order-meta">${order.timestamp}</span>
-                    </div>
-                    <div class="order-meta">${order.people} persone`;
-                
-                if (order.name) orderInfo += ` • ${order.name}`;
-                orderInfo += `</div>`;
-                
-                // Calcola totale
-                let total = calculateOrderTotal(order);
-                
-                orderInfo += `<div class="order-meta"><strong>Totale: €${total.toFixed(2)}</strong></div>`;
-                
-                orderInfo += `
-                    <button class="btn" onclick="viewOrderDetails(${index})" style="margin-top: 10px;">Dettagli</button>
-                    <button class="btn btn-secondary" onclick="deleteOrder(${index})" style="margin-top: 10px;">Elimina</button>
-                `;
-                
-                orderElement.innerHTML = orderInfo;
-                container.appendChild(orderElement);
-            });
-        }
-
         function showFullSummary() {
             if (allOrders.length === 0) {
                 alert("Nessun ordine registrato");
@@ -1077,8 +1371,8 @@
             if (order.drinks.acquaNaturale > 0 || order.drinks.acquaFrizzante > 0) {
                 details += `<div class="summary-item">Acqua: `;
                 let acque = [];
-                if (order.drinks.acquaNaturale > 0) acque.push(`${order.drinks.acquaNaturale} Naturale`);
-                if (order.drinks.acquaFrizzante > 0) acque.push(`${order.drinks.acquaFrizzante} Frizzante`);
+                if (order.drinks.acquaNaturale > 0) acque.push(`${order.drinks.acquaNaturale} Acqua Naturale`);
+                if (order.drinks.acquaFrizzante > 0) acque.push(`${order.drinks.acquaFrizzante} Acqua Frizzante`);
                 details += acque.join(', ') + ` <span class="free-item">(gratuita)</span></div>`;
             }
             
@@ -1137,7 +1431,7 @@
             if (confirm("Sei sicuro di voler eliminare questo ordine?")) {
                 allOrders.splice(index, 1);
                 localStorage.setItem('pizzeria-orders', JSON.stringify(allOrders));
-                showOrders();
+                renderOrdersManagement();
             }
         }
 
