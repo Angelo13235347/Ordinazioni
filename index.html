@@ -82,7 +82,7 @@
         }
         body {
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             background-color: #f5f5f5;
             color: #333;
         }
@@ -97,12 +97,12 @@
         header {
             background-color: var(--primary);
             color: white;
-            padding: 20px;
+            padding: 15px;
             text-align: center;
         }
         h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 22px;
         }
         h2 {
             color: var(--primary);
@@ -113,27 +113,29 @@
         }
         h3 {
             color: var(--primary);
-            margin-top: 20px;
+            margin-top: 15px;
+            font-size: 18px;
         }
         .screen {
-            padding: 20px;
+            padding: 15px;
             display: none;
         }
         .screen.active {
             display: block;
         }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: 600;
             color: var(--dark);
+            font-size: 14px;
         }
         input, select, textarea {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 16px;
@@ -142,12 +144,12 @@
             background-color: var(--secondary);
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
-            margin-right: 10px;
-            margin-top: 10px;
+            font-size: 14px;
+            margin-right: 8px;
+            margin-top: 8px;
             transition: background 0.3s;
         }
         .btn:hover {
@@ -174,25 +176,26 @@
         .menu-card {
             background: var(--light);
             border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
+            padding: 12px;
+            margin-bottom: 12px;
             border-left: 4px solid var(--secondary);
         }
         .menu-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--primary);
         }
         .menu-price {
             float: right;
             font-weight: bold;
             color: var(--secondary);
+            font-size: 15px;
         }
         .menu-description {
-            font-size: 14px;
+            font-size: 13px;
             color: #666;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .quantity-control {
             display: flex;
@@ -201,92 +204,97 @@
         }
         .quantity-label {
             flex-grow: 1;
+            font-size: 14px;
         }
         .quantity-btn {
             background: var(--primary);
             color: white;
             border: none;
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            font-size: 16px;
+            font-size: 14px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .quantity-value {
-            margin: 0 15px;
-            font-size: 18px;
-            min-width: 20px;
+            margin: 0 12px;
+            font-size: 16px;
+            min-width: 18px;
             text-align: center;
         }
         .order-summary {
             background: #f9f9f9;
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
-            margin-top: 20px;
-            margin-bottom: 20px;
+            margin-top: 15px;
+            margin-bottom: 15px;
         }
         .summary-item {
-            margin-bottom: 10px;
-            padding-bottom: 10px;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
             border-bottom: 1px dashed #ddd;
+            font-size: 14px;
         }
         .total {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             color: var(--secondary);
-            margin-top: 15px;
+            margin-top: 12px;
             text-align: right;
         }
         .notes-section {
-            margin-top: 20px;
-        }
-        .pizza-notes {
             margin-top: 15px;
+        }
+        .pizza-notes, .dessert-notes {
+            margin-top: 12px;
         }
         .error {
             color: var(--secondary);
-            font-size: 14px;
+            font-size: 13px;
             margin-top: 5px;
         }
         .orders-list {
-            margin-top: 20px;
+            margin-top: 15px;
         }
         .order-card {
             background: white;
             border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
+            padding: 12px;
+            margin-bottom: 12px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .order-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .order-title {
             font-weight: 600;
             color: var(--primary);
+            font-size: 15px;
         }
         .order-meta {
-            font-size: 14px;
+            font-size: 13px;
             color: #666;
         }
         .button-group {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
         }
         .max-reached {
             color: var(--secondary);
             font-weight: bold;
-            margin-left: 10px;
+            margin-left: 8px;
+            font-size: 13px;
         }
         .summary-btn {
             background-color: var(--success);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .summary-btn:hover {
             background-color: #219653;
@@ -297,13 +305,14 @@
         }
         .modal-tabs {
             display: flex;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             border-bottom: 1px solid #ddd;
         }
         .modal-tab {
-            padding: 10px 15px;
+            padding: 8px 12px;
             cursor: pointer;
             border-bottom: 2px solid transparent;
+            font-size: 14px;
         }
         .modal-tab.active {
             border-bottom: 2px solid var(--secondary);
@@ -317,26 +326,28 @@
         }
         .water-types {
             display: flex;
-            gap: 20px;
-            margin-top: 10px;
+            gap: 15px;
+            margin-top: 8px;
+            flex-wrap: wrap;
         }
         .water-type {
             flex: 1;
+            min-width: 120px;
         }
         
         /* Nuovi stili */
         .main-menu {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            padding: 20px;
+            gap: 15px;
+            padding: 15px;
         }
         
         .main-btn {
             padding: 20px;
-            font-size: 24px;
+            font-size: 20px;
             text-align: center;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -352,8 +363,8 @@
         }
         
         .main-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: scale(1.03);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
         
         .edit-btn {
@@ -366,16 +377,17 @@
         
         .order-actions {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
         }
         
         .order-section {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         
         #operator-display {
-            font-size: 16px;
+            font-size: 14px;
             margin-top: 5px;
             font-weight: bold;
         }
@@ -387,12 +399,12 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: white;
-            padding: 25px;
+            padding: 20px;
             border-radius: 10px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             z-index: 99999;
             max-width: 90%;
-            width: 400px;
+            width: 350px;
             text-align: center;
             display: none;
         }
@@ -400,24 +412,27 @@
         .custom-alert h3 {
             margin-top: 0;
             color: var(--primary);
+            font-size: 18px;
         }
         
         .custom-alert p {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            font-size: 14px;
         }
         
         .custom-alert-buttons {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 10px;
         }
         
         .custom-alert-btn {
-            padding: 8px 20px;
+            padding: 8px 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 14px;
         }
         
         .custom-alert-confirm {
@@ -441,7 +456,7 @@
             display: none;
         }
 
-        /* Stili per la stampa */
+        /* Stili per la stampa (nascosto) */
         @media print {
             body * {
                 visibility: hidden;
@@ -454,44 +469,94 @@
                 left: 0;
                 top: 0;
                 width: 100%;
+                font-size: 14px;
+                padding: 10px;
             }
             .no-print {
                 display: none !important;
             }
             .print-header {
                 text-align: center;
-                margin-bottom: 20px;
+                margin-bottom: 15px;
                 border-bottom: 2px solid #000;
-                padding-bottom: 10px;
+                padding-bottom: 5px;
             }
             .print-title {
-                font-size: 24px;
+                font-size: 20px;
                 margin-bottom: 5px;
             }
             .print-subtitle {
-                font-size: 18px;
+                font-size: 16px;
                 color: #555;
             }
             .print-order-item {
-                margin-bottom: 10px;
-                padding-bottom: 10px;
+                margin-bottom: 8px;
+                padding-bottom: 8px;
                 border-bottom: 1px dashed #ddd;
             }
             .print-total {
-                font-size: 20px;
+                font-size: 18px;
                 font-weight: bold;
                 text-align: right;
-                margin-top: 20px;
+                margin-top: 15px;
             }
             .print-notes {
-                margin-top: 20px;
+                margin-top: 15px;
                 font-style: italic;
+                font-size: 13px;
             }
             .print-footer {
-                margin-top: 30px;
+                margin-top: 20px;
                 text-align: center;
-                font-size: 14px;
+                font-size: 12px;
                 color: #777;
+            }
+        }
+
+        /* Stili per dispositivi mobili */
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 0;
+            }
+            
+            header {
+                padding: 12px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .main-btn {
+                padding: 15px;
+                font-size: 18px;
+            }
+            
+            .water-types {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .water-type {
+                width: 100%;
+            }
+            
+            .order-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 5px;
+            }
+            
+            .modal-tabs {
+                font-size: 12px;
+            }
+            
+            .modal-tab {
+                padding: 6px 8px;
             }
         }
     </style>
@@ -552,10 +617,6 @@
                 <input type="text" id="table-number" placeholder="Es: 1, 2A, 3B">
             </div>
             <div class="form-group">
-                <label for="table-name">Nome Prenotazione (opzionale)</label>
-                <input type="text" id="table-name" placeholder="Es: Famiglia Rossi">
-            </div>
-            <div class="form-group">
                 <label for="people-count">Numero Persone</label>
                 <input type="number" id="people-count" min="1" value="1" onchange="updateMaxOrders()">
             </div>
@@ -594,7 +655,7 @@
                     <span id="birra-mezzo" class="quantity-value">0</span>
                     <button class="quantity-btn" onclick="changeQuantity('birra-mezzo', 1)">+</button>
                 </div>
-                <div class="quantity-control" style="margin-top: 10px;">
+                <div class="quantity-control" style="margin-top: 8px;">
                     <span class="quantity-label">Un Litro (€6)</span>
                     <button class="quantity-btn" onclick="changeQuantity('birra-litro', -1)">-</button>
                     <span id="birra-litro" class="quantity-value">0</span>
@@ -610,13 +671,13 @@
                     <span id="coca-lattina" class="quantity-value">0</span>
                     <button class="quantity-btn" onclick="changeQuantity('coca-lattina', 1)">+</button>
                 </div>
-                <div class="quantity-control" style="margin-top: 10px;">
+                <div class="quantity-control" style="margin-top: 8px;">
                     <span class="quantity-label">Mezzo Litro Spina (€3)</span>
                     <button class="quantity-btn" onclick="changeQuantity('coca-mezzo', -1)">-</button>
                     <span id="coca-mezzo" class="quantity-value">0</span>
                     <button class="quantity-btn" onclick="changeQuantity('coca-mezzo', 1)">+</button>
                 </div>
-                <div class="quantity-control" style="margin-top: 10px;">
+                <div class="quantity-control" style="margin-top: 8px;">
                     <span class="quantity-label">Un Litro Spina (€6)</span>
                     <button class="quantity-btn" onclick="changeQuantity('coca-litro', -1)">-</button>
                     <span id="coca-litro" class="quantity-value">0</span>
@@ -632,7 +693,7 @@
                     <span id="vino-mezzo" class="quantity-value">0</span>
                     <button class="quantity-btn" onclick="changeQuantity('vino-mezzo', 1)">+</button>
                 </div>
-                <div class="quantity-control" style="margin-top: 10px;">
+                <div class="quantity-control" style="margin-top: 8px;">
                     <span class="quantity-label">Un Litro (€8)</span>
                     <button class="quantity-btn" onclick="changeQuantity('vino-litro', -1)">-</button>
                     <span id="vino-litro" class="quantity-value">0</span>
@@ -688,6 +749,13 @@
                 <textarea id="pizza-notes" rows="4" placeholder="Es: 1 Margherita, 2 Diavola, 1 Quattro Formaggi..."></textarea>
             </div>
 
+            <!-- Note per i dolci -->
+            <div class="notes-section">
+                <h2>Gusti Dolci</h2>
+                <p>Inserisci i dolci richiesti dai clienti (uno per riga)</p>
+                <textarea id="dessert-notes" rows="3" placeholder="Es: 1 Tiramisù, 2 Panna Cotta..."></textarea>
+            </div>
+
             <div id="menu-error" class="error"></div>
 
             <div class="button-group">
@@ -725,7 +793,7 @@
 
     <!-- Modal per il riepilogo -->
     <div id="summary-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
-        <div style="background: white; padding: 20px; border-radius: 10px; max-width: 800px; width: 90%; max-height: 80vh; overflow-y: auto;">
+        <div style="background: white; padding: 15px; border-radius: 10px; max-width: 800px; width: 90%; max-height: 80vh; overflow-y: auto;">
             <div class="modal-tabs">
                 <div id="current-tab" class="modal-tab active" onclick="switchTab('current')">Ordine Corrente</div>
                 <div id="all-tab" class="modal-tab" onclick="switchTab('all')">Tutti gli Ordini</div>
@@ -737,7 +805,7 @@
                 <div id="modal-drinks-summary" class="order-summary"></div>
                 <div id="modal-order-summary" class="order-summary"></div>
                 <div id="modal-total-summary" class="total"></div>
-                <button class="btn" onclick="printCurrentOrder()">Stampa/Invia Ordine</button>
+                <button class="btn" onclick="printCurrentOrder()">Stampa Ordine</button>
             </div>
             
             <div id="all-summary" class="modal-content">
@@ -745,7 +813,7 @@
                 <div id="modal-all-orders" class="order-summary"></div>
             </div>
             
-            <button class="btn" onclick="hideSummaryModal()" style="margin-top: 20px;">Chiudi</button>
+            <button class="btn" onclick="hideSummaryModal()" style="margin-top: 15px;">Chiudi</button>
         </div>
     </div>
 
@@ -759,9 +827,8 @@
             
             <div class="print-order-info">
                 <div><strong>Tavolo:</strong> <span id="print-table"></span></div>
-                <div id="print-name-container" style="display: none;"><strong>Nome:</strong> <span id="print-name"></span></div>
-                <div><strong>Data/Ora:</strong> <span id="print-date"></span></div>
                 <div><strong>Operatore:</strong> <span id="print-operator"></span></div>
+                <div><strong>Ora:</strong> <span id="print-date"></span></div>
             </div>
             
             <h3 class="print-order-title">Dettaglio Ordine</h3>
@@ -779,7 +846,6 @@
             </div>
             
             <div class="print-footer">
-                Grazie per aver scelto la nostra pizzeria!<br>
                 Servizio al tavolo - Pagamento alla cassa
             </div>
         </div>
@@ -791,7 +857,6 @@
         let currentOrder = {
             operator: "",
             table: "",
-            name: "",
             people: 1,
             menus: {
                 completo: 0,
@@ -810,6 +875,7 @@
                 vinoLitro: 0
             },
             pizzaNotes: "",
+            dessertNotes: "",
             timestamp: ""
         };
 
@@ -929,9 +995,7 @@
                     orderElement.className = 'order-summary';
                     
                     let orderInfo = `
-                        <p><strong>${order.timestamp}</strong> - ${order.people} persone`;
-                    if (order.name) orderInfo += ` (${order.name})`;
-                    orderInfo += ` - Totale: €${calculateOrderTotal(order).toFixed(2)}</p>`;
+                        <p><strong>${order.timestamp}</strong> - ${order.people} persone - Totale: €${calculateOrderTotal(order).toFixed(2)}</p>`;
                     
                     // Menu ordinati
                     if (order.menus.completo > 0 || order.menus.pizza > 0 || order.menus.bambino > 0) {
@@ -946,6 +1010,11 @@
                     // Pizze
                     if (order.pizzaNotes) {
                         orderInfo += `<p><strong>Pizze:</strong><br>${order.pizzaNotes.replace(/\n/g, '<br>')}</p>`;
+                    }
+                    
+                    // Dolci
+                    if (order.dessertNotes) {
+                        orderInfo += `<p><strong>Dolci:</strong><br>${order.dessertNotes.replace(/\n/g, '<br>')}</p>`;
                     }
                     
                     // Bevande
@@ -967,8 +1036,7 @@
                         <div class="order-actions">
                             <button class="btn" onclick="editOrder(${order.originalIndex})">Modifica</button>
                             <button class="btn btn-secondary" onclick="deleteOrder(${order.originalIndex})">Elimina</button>
-                            <button class="btn btn-info" onclick="viewOrderDetails(${order.originalIndex})">Dettagli</button>
-                            <button class="btn btn-success" onclick="printOrder(${order.originalIndex})">Stampa</button>
+                            <button class="btn btn-info" onclick="printOrder(${order.originalIndex})">Stampa</button>
                         </div>
                     `;
                     
@@ -996,11 +1064,6 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="edit-table-name">Nome Prenotazione (opzionale)</label>
-                    <input type="text" id="edit-table-name" value="${order.name || ''}">
-                </div>
-                
-                <div class="form-group">
                     <label for="edit-people-count">Numero Persone</label>
                     <input type="number" id="edit-people-count" min="1" value="${order.people}">
                 </div>
@@ -1017,22 +1080,49 @@
                     <textarea id="edit-pizza-notes" rows="4" placeholder="Es: 1 Margherita, 2 Diavola, 1 Quattro Formaggi...">${order.pizzaNotes || ''}</textarea>
                 </div>
                 
+                <div class="notes-section">
+                    <h3>Modifica Gusti Dolci</h3>
+                    <textarea id="edit-dessert-notes" rows="3" placeholder="Es: 1 Tiramisù, 2 Panna Cotta...">${order.dessertNotes || ''}</textarea>
+                </div>
+                
                 <div class="order-section">
-                    <h3>Aggiungi Bevande Extra</h3>
+                    <h3>Modifica Bevande</h3>
+                    
+                    <div class="menu-card">
+                        <div class="menu-title">Acqua</div>
+                        <div class="water-types">
+                            <div class="water-type">
+                                <div class="quantity-control">
+                                    <span class="quantity-label">Naturale</span>
+                                    <button class="quantity-btn" onclick="changeEditQuantity('edit-acqua-naturale', -1)">-</button>
+                                    <span id="edit-acqua-naturale" class="quantity-value">${order.drinks.acquaNaturale}</span>
+                                    <button class="quantity-btn" onclick="changeEditQuantity('edit-acqua-naturale', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="water-type">
+                                <div class="quantity-control">
+                                    <span class="quantity-label">Frizzante</span>
+                                    <button class="quantity-btn" onclick="changeEditQuantity('edit-acqua-frizzante', -1)">-</button>
+                                    <span id="edit-acqua-frizzante" class="quantity-value">${order.drinks.acquaFrizzante}</span>
+                                    <button class="quantity-btn" onclick="changeEditQuantity('edit-acqua-frizzante', 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="menu-card">
                         <div class="menu-title">Birra alla Spina</div>
                         <div class="quantity-control">
                             <span class="quantity-label">Mezzo Litro (€3)</span>
-                            <button class="quantity-btn" onclick="changeEditQuantity('extra-birra-mezzo', -1)">-</button>
-                            <span id="extra-birra-mezzo" class="quantity-value">0</span>
-                            <button class="quantity-btn" onclick="changeEditQuantity('extra-birra-mezzo', 1)">+</button>
+                            <button class="quantity-btn" onclick="changeEditQuantity('edit-birra-mezzo', -1)">-</button>
+                            <span id="edit-birra-mezzo" class="quantity-value">${order.drinks.birraMezzo}</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('edit-birra-mezzo', 1)">+</button>
                         </div>
-                        <div class="quantity-control" style="margin-top: 10px;">
+                        <div class="quantity-control" style="margin-top: 8px;">
                             <span class="quantity-label">Un Litro (€6)</span>
-                            <button class="quantity-btn" onclick="changeEditQuantity('extra-birra-litro', -1)">-</button>
-                            <span id="extra-birra-litro" class="quantity-value">0</span>
-                            <button class="quantity-btn" onclick="changeEditQuantity('extra-birra-litro', 1)">+</button>
+                            <button class="quantity-btn" onclick="changeEditQuantity('edit-birra-litro', -1)">-</button>
+                            <span id="edit-birra-litro" class="quantity-value">${order.drinks.birraLitro}</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('edit-birra-litro', 1)">+</button>
                         </div>
                     </div>
                     
@@ -1040,15 +1130,15 @@
                         <div class="menu-title">Coca Cola</div>
                         <div class="quantity-control">
                             <span class="quantity-label">Lattina (€2.5)</span>
-                            <button class="quantity-btn" onclick="changeEditQuantity('extra-coca-lattina', -1)">-</button>
-                            <span id="extra-coca-lattina" class="quantity-value">0</span>
-                            <button class="quantity-btn" onclick="changeEditQuantity('extra-coca-lattina', 1)">+</button>
+                            <button class="quantity-btn" onclick="changeEditQuantity('edit-coca-lattina', -1)">-</button>
+                            <span id="edit-coca-lattina" class="quantity-value">${order.drinks.cocaLattina}</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('edit-coca-lattina', 1)">+</button>
                         </div>
-                        <div class="quantity-control" style="margin-top: 10px;">
+                        <div class="quantity-control" style="margin-top: 8px;">
                             <span class="quantity-label">Mezzo Litro Spina (€3)</span>
-                            <button class="quantity-btn" onclick="changeEditQuantity('extra-coca-mezzo', -1)">-</button>
-                            <span id="extra-coca-mezzo" class="quantity-value">0</span>
-                            <button class="quantity-btn" onclick="changeEditQuantity('extra-coca-mezzo', 1)">+</button>
+                            <button class="quantity-btn" onclick="changeEditQuantity('edit-coca-mezzo', -1)">-</button>
+                            <span id="edit-coca-mezzo" class="quantity-value">${order.drinks.cocaMezzo}</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('edit-coca-mezzo', 1)">+</button>
                         </div>
                     </div>
                     
@@ -1056,9 +1146,15 @@
                         <div class="menu-title">Vino alla Spina</div>
                         <div class="quantity-control">
                             <span class="quantity-label">Mezzo Litro (€4)</span>
-                            <button class="quantity-btn" onclick="changeEditQuantity('extra-vino-mezzo', -1)">-</button>
-                            <span id="extra-vino-mezzo" class="quantity-value">0</span>
-                            <button class="quantity-btn" onclick="changeEditQuantity('extra-vino-mezzo', 1)">+</button>
+                            <button class="quantity-btn" onclick="changeEditQuantity('edit-vino-mezzo', -1)">-</button>
+                            <span id="edit-vino-mezzo" class="quantity-value">${order.drinks.vinoMezzo}</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('edit-vino-mezzo', 1)">+</button>
+                        </div>
+                        <div class="quantity-control" style="margin-top: 8px;">
+                            <span class="quantity-label">Un Litro (€8)</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('edit-vino-litro', -1)">-</button>
+                            <span id="edit-vino-litro" class="quantity-value">${order.drinks.vinoLitro}</span>
+                            <button class="quantity-btn" onclick="changeEditQuantity('edit-vino-litro', 1)">+</button>
                         </div>
                     </div>
                 </div>
@@ -1079,16 +1175,19 @@
             
             // Aggiorna i dati dell'ordine con le modifiche
             order.table = document.getElementById('edit-table-number').value;
-            order.name = document.getElementById('edit-table-name').value;
             order.people = parseInt(document.getElementById('edit-people-count').value);
             order.pizzaNotes = document.getElementById('edit-pizza-notes').value;
+            order.dessertNotes = document.getElementById('edit-dessert-notes').value;
             
-            // Aggiungi le bevande extra
-            order.drinks.birraMezzo += parseInt(document.getElementById('extra-birra-mezzo').textContent);
-            order.drinks.birraLitro += parseInt(document.getElementById('extra-birra-litro').textContent);
-            order.drinks.cocaLattina += parseInt(document.getElementById('extra-coca-lattina').textContent);
-            order.drinks.cocaMezzo += parseInt(document.getElementById('extra-coca-mezzo').textContent);
-            order.drinks.vinoMezzo += parseInt(document.getElementById('extra-vino-mezzo').textContent);
+            // Aggiorna le bevande
+            order.drinks.acquaNaturale = parseInt(document.getElementById('edit-acqua-naturale').textContent);
+            order.drinks.acquaFrizzante = parseInt(document.getElementById('edit-acqua-frizzante').textContent);
+            order.drinks.birraMezzo = parseInt(document.getElementById('edit-birra-mezzo').textContent);
+            order.drinks.birraLitro = parseInt(document.getElementById('edit-birra-litro').textContent);
+            order.drinks.cocaLattina = parseInt(document.getElementById('edit-coca-lattina').textContent);
+            order.drinks.cocaMezzo = parseInt(document.getElementById('edit-coca-mezzo').textContent);
+            order.drinks.vinoMezzo = parseInt(document.getElementById('edit-vino-mezzo').textContent);
+            order.drinks.vinoLitro = parseInt(document.getElementById('edit-vino-litro').textContent);
             
             // Aggiorna timestamp
             order.timestamp = new Date().toLocaleString();
@@ -1162,7 +1261,6 @@
         function goToSummaryScreen() {
             const table = document.getElementById('table-number').value.trim();
             const people = parseInt(document.getElementById('people-count').value);
-            const name = document.getElementById('table-name').value.trim();
             
             if (!table || !people) {
                 showCustomAlert(
@@ -1193,12 +1291,12 @@
             document.getElementById('menu-error').textContent = "";
             
             currentOrder.table = table;
-            currentOrder.name = name;
             currentOrder.people = people;
             currentOrder.menus.completo = completo;
             currentOrder.menus.pizza = pizza;
             currentOrder.menus.bambino = bambino;
             currentOrder.pizzaNotes = document.getElementById('pizza-notes').value;
+            currentOrder.dessertNotes = document.getElementById('dessert-notes').value;
             
             // Salva le bevande
             currentOrder.drinks.acquaNaturale = parseInt(document.getElementById('acqua-naturale').textContent);
@@ -1234,7 +1332,6 @@
             currentOrder = {
                 operator: currentOperator,
                 table: "",
-                name: "",
                 people: 1,
                 menus: {
                     completo: 0,
@@ -1253,17 +1350,18 @@
                     vinoLitro: 0
                 },
                 pizzaNotes: "",
+                dessertNotes: "",
                 timestamp: ""
             };
             
             // Resetta i valori nell'interfaccia
             document.getElementById('table-number').value = "";
-            document.getElementById('table-name').value = "";
             document.getElementById('people-count').value = "1";
             document.getElementById('menu-completo').textContent = "0";
             document.getElementById('menu-pizza').textContent = "0";
             document.getElementById('menu-bambino').textContent = "0";
             document.getElementById('pizza-notes').value = "";
+            document.getElementById('dessert-notes').value = "";
             document.getElementById('max-completo').textContent = "";
             document.getElementById('max-pizza').textContent = "";
             document.getElementById('max-bambino').textContent = "";
@@ -1284,8 +1382,6 @@
         function updateSummary() {
             // Info tavolo
             let tableInfo = `<h3>Tavolo ${document.getElementById('table-number').value || '?'}`;
-            const tableName = document.getElementById('table-name').value;
-            if (tableName) tableInfo += ` (${tableName})`;
             const people = document.getElementById('people-count').value || 1;
             tableInfo += `</h3><p>${people} persone</p>`;
             document.getElementById('modal-table-summary').innerHTML = tableInfo;
@@ -1371,6 +1467,12 @@
                 menuHtml += `<div class="summary-item"><strong>Gusti Pizza:</strong><br>${pizzaNotes.replace(/\n/g, '<br>')}</div>`;
             }
             
+            // Note dolci
+            const dessertNotes = document.getElementById('dessert-notes').value;
+            if (dessertNotes) {
+                menuHtml += `<div class="summary-item"><strong>Gusti Dolci:</strong><br>${dessertNotes.replace(/\n/g, '<br>')}</div>`;
+            }
+            
             document.getElementById('modal-order-summary').innerHTML = menuHtml;
             
             // Totale
@@ -1405,10 +1507,8 @@
                     allOrdersHtml += `<h3>Tavolo ${table} - Totale: €${data.total.toFixed(2)}</h3>`;
                     
                     data.orders.forEach(order => {
-                        allOrdersHtml += `<div class="order-summary" style="margin-bottom: 15px;">`;
-                        allOrdersHtml += `<p><strong>${order.timestamp}</strong> - ${order.people} persone`;
-                        if (order.name) allOrdersHtml += ` (${order.name})`;
-                        allOrdersHtml += ` - €${calculateOrderTotal(order).toFixed(2)}</p>`;
+                        allOrdersHtml += `<div class="order-summary" style="margin-bottom: 12px;">`;
+                        allOrdersHtml += `<p><strong>${order.timestamp}</strong> - ${order.people} persone - €${calculateOrderTotal(order).toFixed(2)}</p>`;
                         
                         // Dettagli ordine
                         if (order.menus.completo > 0 || order.menus.pizza > 0 || order.menus.bambino > 0) {
@@ -1420,6 +1520,16 @@
                             allOrdersHtml += menus.join(', ') + `</p>`;
                         }
                         
+                        // Pizze
+                        if (order.pizzaNotes) {
+                            allOrdersHtml += `<p><strong>Pizze:</strong><br>${order.pizzaNotes.replace(/\n/g, '<br>')}</p>`;
+                        }
+                        
+                        // Dolci
+                        if (order.dessertNotes) {
+                            allOrdersHtml += `<p><strong>Dolci:</strong><br>${order.dessertNotes.replace(/\n/g, '<br>')}</p>`;
+                        }
+                        
                         // Acqua
                         if (order.drinks.acquaNaturale > 0 || order.drinks.acquaFrizzante > 0) {
                             allOrdersHtml += `<p><strong>Acqua:</strong> `;
@@ -1427,10 +1537,6 @@
                             if (order.drinks.acquaNaturale > 0) acque.push(`${order.drinks.acquaNaturale} Naturale`);
                             if (order.drinks.acquaFrizzante > 0) acque.push(`${order.drinks.acquaFrizzante} Frizzante`);
                             allOrdersHtml += acque.join(', ') + ` <span class="free-item">(gratuita)</span></p>`;
-                        }
-                        
-                        if (order.pizzaNotes) {
-                            allOrdersHtml += `<p><strong>Gusti Pizza:</strong><br>${order.pizzaNotes.replace(/\n/g, '<br>')}</p>`;
                         }
                         
                         allOrdersHtml += `</div>`;
@@ -1520,13 +1626,11 @@
                 summary += `<h3>Tavolo ${table} - Totale: €${data.total.toFixed(2)}</h3>`;
                 
                 data.orders.forEach(order => {
-                    summary += `<p><strong>${order.timestamp}</strong> - ${order.people} persone`;
-                    if (order.name) summary += ` (${order.name})`;
-                    summary += ` - €${calculateOrderTotal(order).toFixed(2)}</p>`;
+                    summary += `<p><strong>${order.timestamp}</strong> - ${order.people} persone - €${calculateOrderTotal(order).toFixed(2)}</p>`;
                 });
             }
             
-            summary += `<h3 style="margin-top: 20px;">Totale Generale: €${grandTotal.toFixed(2)}</h3>`;
+            summary += `<h3 style="margin-top: 15px;">Totale Generale: €${grandTotal.toFixed(2)}</h3>`;
             
             // Crea una nuova finestra per il riepilogo
             const summaryWindow = window.open('', '_blank', 'width=800,height=600');
@@ -1535,103 +1639,16 @@
                 <head>
                     <title>Recap Completo Ordini</title>
                     <style>
-                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        body { font-family: Arial, sans-serif; padding: 15px; }
                         h2 { color: #2c3e50; }
-                        h3 { color: #e74c3c; margin-top: 20px; }
+                        h3 { color: #e74c3c; margin-top: 15px; }
                         p { margin: 5px 0; }
                         .free-item { color: #27ae60; font-weight: bold; }
                     </style>
                 </head>
                 <body>
                     ${summary}
-                    <button onclick="window.print()" style="padding: 10px 15px; background: #2c3e50; color: white; border: none; cursor: pointer; margin-top: 20px;">Stampa</button>
-                </body>
-                </html>
-            `);
-        }
-
-        function viewOrderDetails(index) {
-            const order = allOrders[index];
-            let details = `
-                <h3>Dettagli Ordine - Tavolo ${order.table}</h3>
-                <p><strong>Operatore:</strong> ${order.operator}</p>
-                <p><strong>Persone:</strong> ${order.people}</p>
-                ${order.name ? `<p><strong>Nome:</strong> ${order.name}</p>` : ''}
-                <p><strong>Ora:</strong> ${order.timestamp}</p>
-                <hr>
-                <h4>Menu Ordinati:</h4>
-            `;
-            
-            if (order.menus.completo > 0) {
-                details += `<p>Menu Completo: ${order.menus.completo} x €20 = €${order.menus.completo * 20}</p>`;
-            }
-            if (order.menus.pizza > 0) {
-                details += `<p>Menu Solo Pizza: ${order.menus.pizza} x €15 = €${order.menus.pizza * 15}</p>`;
-            }
-            if (order.menus.bambino > 0) {
-                details += `<p>Menu Bambino: ${order.menus.bambino} x €12 = €${order.menus.bambino * 12}</p>`;
-            }
-            
-            if (order.pizzaNotes) {
-                details += `<h4>Gusti Pizza:</h4><p>${order.pizzaNotes.replace(/\n/g, '<br>')}</p>`;
-            }
-            
-            details += `<h4>Bevande</h4>`;
-            
-            if (order.drinks.acquaNaturale > 0 || order.drinks.acquaFrizzante > 0) {
-                details += `<div class="summary-item">Acqua: `;
-                let acque = [];
-                if (order.drinks.acquaNaturale > 0) acque.push(`${order.drinks.acquaNaturale} Acqua Naturale`);
-                if (order.drinks.acquaFrizzante > 0) acque.push(`${order.drinks.acquaFrizzante} Acqua Frizzante`);
-                details += acque.join(', ') + ` <span class="free-item">(gratuita)</span></div>`;
-            }
-            
-            details += `<h4>Bevande Extra:</h4>`;
-            let hasDrinks = false;
-            
-            for (const [key, value] of Object.entries(order.drinks)) {
-                if (value > 0 && key !== 'acquaNaturale' && key !== 'acquaFrizzante') {
-                    hasDrinks = true;
-                    let name, price;
-                    switch(key) {
-                        case 'birraMezzo': name = "Birra alla Spina (0.5L)"; price = 3; break;
-                        case 'birraLitro': name = "Birra alla Spina (1L)"; price = 6; break;
-                        case 'cocaLattina': name = "Coca Cola Lattina"; price = 2.5; break;
-                        case 'cocaMezzo': name = "Coca Cola Spina (0.5L)"; price = 3; break;
-                        case 'cocaLitro': name = "Coca Cola Spina (1L)"; price = 6; break;
-                        case 'vinoMezzo': name = "Vino alla Spina (0.5L)"; price = 4; break;
-                        case 'vinoLitro': name = "Vino alla Spina (1L)"; price = 8; break;
-                        default: name = key; price = 0;
-                    }
-                    details += `<p>${name}: ${value} x €${price} = €${value * price}</p>`;
-                }
-            }
-            
-            if (!hasDrinks) {
-                details += `<p>Nessuna bevanda extra selezionata</p>`;
-            }
-            
-            // Calcola totale
-            let total = calculateOrderTotal(order);
-            
-            details += `<hr><h3>Totale: €${total.toFixed(2)}</h3>`;
-            
-            // Crea una nuova finestra per i dettagli
-            const detailsWindow = window.open('', '_blank', 'width=600,height=700');
-            detailsWindow.document.write(`
-                <html>
-                <head>
-                    <title>Dettagli Ordine - Tavolo ${order.table}</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; padding: 20px; }
-                        h3 { color: #2c3e50; }
-                        hr { border: 0; border-top: 1px solid #eee; margin: 15px 0; }
-                        .free-item { color: #27ae60; font-weight: bold; }
-                    </style>
-                </head>
-                <body>
-                    ${details}
-                    <button onclick="window.print()" style="padding: 10px 15px; background: #2c3e50; color: white; border: none; cursor: pointer; margin-top: 20px;">Stampa</button>
+                    <button onclick="window.print()" style="padding: 8px 12px; background: #2c3e50; color: white; border: none; cursor: pointer; margin-top: 15px;">Stampa</button>
                 </body>
                 </html>
             `);
@@ -1757,9 +1774,8 @@
         // Funzione per stampare l'ordine corrente
         function printCurrentOrder() {
             const table = document.getElementById('table-number').value || "?";
-            const name = document.getElementById('table-name').value || "";
-            const people = document.getElementById('people-count').value || 1;
             const pizzaNotes = document.getElementById('pizza-notes').value || "";
+            const dessertNotes = document.getElementById('dessert-notes').value || "";
             
             // Calcola il totale
             const total = calculateCurrentTotal();
@@ -1774,12 +1790,6 @@
             printTemplate.querySelector('#print-date').textContent = new Date().toLocaleString();
             printTemplate.querySelector('#print-operator').textContent = currentOperator;
             printTemplate.querySelector('#print-total-amount').textContent = total.toFixed(2);
-            
-            // Nome prenotazione (se presente)
-            if (name) {
-                printTemplate.querySelector('#print-name').textContent = name;
-                printTemplate.querySelector('#print-name-container').style.display = 'block';
-            }
             
             // Menu ordinati
             const menuItemsContainer = printTemplate.querySelector('#print-menu-items');
@@ -1842,10 +1852,20 @@
                 drinkItemsContainer.innerHTML += `<div class="print-order-item">Vino alla Spina (1L): ${vinoLitro} x €8 = €${(vinoLitro * 8).toFixed(2)}</div>`;
             }
             
-            // Note pizze (se presenti)
-            if (pizzaNotes) {
-                printTemplate.querySelector('#print-notes').innerHTML = pizzaNotes.replace(/\n/g, '<br>');
+            // Note pizze e dolci
+            if (pizzaNotes || dessertNotes) {
                 printTemplate.querySelector('#print-notes-container').style.display = 'block';
+                let notesHtml = '';
+                
+                if (pizzaNotes) {
+                    notesHtml += `<p><strong>Pizze:</strong><br>${pizzaNotes.replace(/\n/g, '<br>')}</p>`;
+                }
+                
+                if (dessertNotes) {
+                    notesHtml += `<p><strong>Dolci:</strong><br>${dessertNotes.replace(/\n/g, '<br>')}</p>`;
+                }
+                
+                printTemplate.querySelector('#print-notes').innerHTML = notesHtml;
             }
             
             // Aggiungi il template al documento
@@ -1874,12 +1894,6 @@
             printTemplate.querySelector('#print-date').textContent = order.timestamp;
             printTemplate.querySelector('#print-operator').textContent = order.operator;
             printTemplate.querySelector('#print-total-amount').textContent = calculateOrderTotal(order).toFixed(2);
-            
-            // Nome prenotazione (se presente)
-            if (order.name) {
-                printTemplate.querySelector('#print-name').textContent = order.name;
-                printTemplate.querySelector('#print-name-container').style.display = 'block';
-            }
             
             // Menu ordinati
             const menuItemsContainer = printTemplate.querySelector('#print-menu-items');
@@ -1928,10 +1942,20 @@
                 drinkItemsContainer.innerHTML += `<div class="print-order-item">Vino alla Spina (1L): ${order.drinks.vinoLitro} x €8 = €${(order.drinks.vinoLitro * 8).toFixed(2)}</div>`;
             }
             
-            // Note pizze (se presenti)
-            if (order.pizzaNotes) {
-                printTemplate.querySelector('#print-notes').innerHTML = order.pizzaNotes.replace(/\n/g, '<br>');
+            // Note pizze e dolci
+            if (order.pizzaNotes || order.dessertNotes) {
                 printTemplate.querySelector('#print-notes-container').style.display = 'block';
+                let notesHtml = '';
+                
+                if (order.pizzaNotes) {
+                    notesHtml += `<p><strong>Pizze:</strong><br>${order.pizzaNotes.replace(/\n/g, '<br>')}</p>`;
+                }
+                
+                if (order.dessertNotes) {
+                    notesHtml += `<p><strong>Dolci:</strong><br>${order.dessertNotes.replace(/\n/g, '<br>')}</p>`;
+                }
+                
+                printTemplate.querySelector('#print-notes').innerHTML = notesHtml;
             }
             
             // Aggiungi il template al documento
