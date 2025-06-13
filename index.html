@@ -379,14 +379,140 @@
             margin-top: 5px;
             font-weight: bold;
         }
+
+        /* Stili per gli alert personalizzati */
+        .custom-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 99999;
+            max-width: 90%;
+            width: 400px;
+            text-align: center;
+            display: none;
+        }
+        
+        .custom-alert h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+        
+        .custom-alert p {
+            margin-bottom: 20px;
+        }
+        
+        .custom-alert-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .custom-alert-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .custom-alert-confirm {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .custom-alert-cancel {
+            background-color: #ddd;
+            color: #333;
+        }
+        
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 99998;
+            display: none;
+        }
+
+        /* Stili per la stampa */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .print-section, .print-section * {
+                visibility: visible;
+            }
+            .print-section {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-header {
+                text-align: center;
+                margin-bottom: 20px;
+                border-bottom: 2px solid #000;
+                padding-bottom: 10px;
+            }
+            .print-title {
+                font-size: 24px;
+                margin-bottom: 5px;
+            }
+            .print-subtitle {
+                font-size: 18px;
+                color: #555;
+            }
+            .print-order-item {
+                margin-bottom: 10px;
+                padding-bottom: 10px;
+                border-bottom: 1px dashed #ddd;
+            }
+            .print-total {
+                font-size: 20px;
+                font-weight: bold;
+                text-align: right;
+                margin-top: 20px;
+            }
+            .print-notes {
+                margin-top: 20px;
+                font-style: italic;
+            }
+            .print-footer {
+                margin-top: 30px;
+                text-align: center;
+                font-size: 14px;
+                color: #777;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Splash Screen -->
     <div id="splash-screen">
-<img id="splash-logo" src="logo.jpg" alt="Logo Pizzeria">
+       <img id="splash-logo" src="logo.jpg" alt="Logo Pizzeria">
         <div id="splash-text">Gestione Comande Pizzeria</div>
         <div id="splash-loading"></div>
+    </div>
+
+    <!-- Custom Alert Dialog -->
+    <div id="customAlertOverlay" class="custom-alert-overlay"></div>
+    <div id="customAlert" class="custom-alert">
+        <h3 id="customAlertTitle">Conferma</h3>
+        <p id="customAlertMessage">Sei sicuro di voler procedere?</p>
+        <div class="custom-alert-buttons">
+            <button id="customAlertCancel" class="custom-alert-btn custom-alert-cancel">Annulla</button>
+            <button id="customAlertConfirm" class="custom-alert-btn custom-alert-confirm">Conferma</button>
+        </div>
     </div>
 
     <!-- Applicazione -->
@@ -611,6 +737,7 @@
                 <div id="modal-drinks-summary" class="order-summary"></div>
                 <div id="modal-order-summary" class="order-summary"></div>
                 <div id="modal-total-summary" class="total"></div>
+                <button class="btn" onclick="printCurrentOrder()">Stampa/Invia Ordine</button>
             </div>
             
             <div id="all-summary" class="modal-content">
@@ -619,6 +746,42 @@
             </div>
             
             <button class="btn" onclick="hideSummaryModal()" style="margin-top: 20px;">Chiudi</button>
+        </div>
+    </div>
+
+    <!-- Template per la stampa (nascosto) -->
+    <div id="print-template" style="display: none;">
+        <div class="print-section">
+            <div class="print-header">
+                <div class="print-title">Pizzeria Bella Napoli</div>
+                <div class="print-subtitle">Via Roma 123, Milano - Tel. 02 1234567</div>
+            </div>
+            
+            <div class="print-order-info">
+                <div><strong>Tavolo:</strong> <span id="print-table"></span></div>
+                <div id="print-name-container" style="display: none;"><strong>Nome:</strong> <span id="print-name"></span></div>
+                <div><strong>Data/Ora:</strong> <span id="print-date"></span></div>
+                <div><strong>Operatore:</strong> <span id="print-operator"></span></div>
+            </div>
+            
+            <h3 class="print-order-title">Dettaglio Ordine</h3>
+            
+            <div id="print-menu-items"></div>
+            <div id="print-drink-items"></div>
+            
+            <div class="print-total">
+                <strong>TOTALE: €<span id="print-total-amount"></span></strong>
+            </div>
+            
+            <div id="print-notes-container" class="print-notes" style="display: none;">
+                <h4>Note:</h4>
+                <div id="print-notes"></div>
+            </div>
+            
+            <div class="print-footer">
+                Grazie per aver scelto la nostra pizzeria!<br>
+                Servizio al tavolo - Pagamento alla cassa
+            </div>
         </div>
     </div>
 
@@ -705,12 +868,25 @@
         function setOperator() {
             const operator = document.getElementById('operator-name').value.trim();
             if (!operator) {
-                alert("Inserisci il nome dell'operatore");
+                showCustomAlert(
+                    "Attenzione", 
+                    "Inserisci il nome dell'operatore",
+                    function() {
+                        document.getElementById('operator-name').focus();
+                    }
+                );
                 return;
             }
             currentOperator = operator;
             localStorage.setItem('pizzeria-operator', operator);
-            showMainScreen();
+            
+            showCustomAlert(
+                "Operatore Registrato", 
+                `Benvenuto ${operator}!`,
+                function() {
+                    showMainScreen();
+                }
+            );
         }
 
         function startNewOrder() {
@@ -792,6 +968,7 @@
                             <button class="btn" onclick="editOrder(${order.originalIndex})">Modifica</button>
                             <button class="btn btn-secondary" onclick="deleteOrder(${order.originalIndex})">Elimina</button>
                             <button class="btn btn-info" onclick="viewOrderDetails(${order.originalIndex})">Dettagli</button>
+                            <button class="btn btn-success" onclick="printOrder(${order.originalIndex})">Stampa</button>
                         </div>
                     `;
                     
@@ -919,8 +1096,13 @@
             // Salva le modifiche
             localStorage.setItem('pizzeria-orders', JSON.stringify(allOrders));
             
-            alert("Ordine modificato con successo!");
-            showScreen('orders');
+            showCustomAlert(
+                "Ordine Modificato", 
+                "L'ordine è stato modificato con successo!",
+                function() {
+                    showScreen('orders');
+                }
+            );
         }
 
         function cancelEdit() {
@@ -943,7 +1125,14 @@
                                     (item === 'menu-pizza' ? delta : 0) + (item === 'menu-bambino' ? delta : 0);
                 
                 if (totalSelected > people && delta > 0) {
-                    alert(`Non puoi superare il numero di persone (${people})`);
+                    showCustomAlert(
+                        "Attenzione", 
+                        `Non puoi superare il numero di persone (${people})`,
+                        function() {
+                            // Focus sul campo persone
+                            document.getElementById('people-count').focus();
+                        }
+                    );
                     return;
                 }
             }
@@ -976,7 +1165,17 @@
             const name = document.getElementById('table-name').value.trim();
             
             if (!table || !people) {
-                alert("Inserisci numero tavolo e numero persone");
+                showCustomAlert(
+                    "Attenzione", 
+                    "Inserisci numero tavolo e numero persone",
+                    function() {
+                        if (!table) {
+                            document.getElementById('table-number').focus();
+                        } else {
+                            document.getElementById('people-count').focus();
+                        }
+                    }
+                );
                 return;
             }
             
@@ -1021,9 +1220,14 @@
             allOrders.push({...currentOrder});
             localStorage.setItem('pizzeria-orders', JSON.stringify(allOrders));
             
-            alert(`Ordine per il Tavolo ${currentOrder.table} salvato correttamente!`);
-            resetOrder();
-            showScreen('orders');
+            showCustomAlert(
+                "Ordine Salvato", 
+                `Ordine per il Tavolo ${currentOrder.table} salvato correttamente!`,
+                function() {
+                    resetOrder();
+                    showScreen('orders');
+                }
+            );
         }
 
         function resetOrder() {
@@ -1281,7 +1485,13 @@
 
         function showFullSummary() {
             if (allOrders.length === 0) {
-                alert("Nessun ordine registrato");
+                showCustomAlert(
+                    "Attenzione", 
+                    "Nessun ordine registrato",
+                    function() {
+                        // Nessuna azione dopo la chiusura
+                    }
+                );
                 return;
             }
             
@@ -1428,11 +1638,25 @@
         }
 
         function deleteOrder(index) {
-            if (confirm("Sei sicuro di voler eliminare questo ordine?")) {
-                allOrders.splice(index, 1);
-                localStorage.setItem('pizzeria-orders', JSON.stringify(allOrders));
-                renderOrdersManagement();
-            }
+            showCustomAlert(
+                "Elimina Ordine", 
+                "Sei sicuro di voler eliminare definitivamente questo ordine?",
+                function() {
+                    // Azione di conferma
+                    allOrders.splice(index, 1);
+                    localStorage.setItem('pizzeria-orders', JSON.stringify(allOrders));
+                    renderOrdersManagement();
+                    
+                    // Mostra un messaggio di successo
+                    showCustomAlert(
+                        "Ordine Eliminato", 
+                        "L'ordine è stato eliminato con successo!",
+                        function() {
+                            // Nessuna azione dopo la chiusura
+                        }
+                    );
+                }
+            );
         }
 
         // Modal per il riepilogo
@@ -1473,6 +1697,253 @@
                 document.getElementById('all-summary').classList.add('active');
                 document.getElementById('all-tab').classList.add('active');
             }
+        }
+
+        // Funzione per mostrare alert personalizzati
+        function showCustomAlert(title, message, confirmCallback, cancelCallback) {
+            const alertEl = document.getElementById('customAlert');
+            const overlayEl = document.getElementById('customAlertOverlay');
+            const titleEl = document.getElementById('customAlertTitle');
+            const messageEl = document.getElementById('customAlertMessage');
+            const confirmBtn = document.getElementById('customAlertConfirm');
+            const cancelBtn = document.getElementById('customAlertCancel');
+            
+            // Imposta titolo e messaggio
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+            
+            // Mostra l'alert
+            alertEl.style.display = 'block';
+            overlayEl.style.display = 'block';
+            
+            // Nascondi il pulsante annulla se non c'è callback
+            if (!cancelCallback) {
+                cancelBtn.style.display = 'none';
+            } else {
+                cancelBtn.style.display = 'block';
+            }
+            
+            // Funzione per nascondere l'alert
+            const hideAlert = () => {
+                alertEl.style.display = 'none';
+                overlayEl.style.display = 'none';
+            };
+            
+            // Gestione click su conferma
+            confirmBtn.onclick = () => {
+                hideAlert();
+                if (typeof confirmCallback === 'function') {
+                    confirmCallback();
+                }
+            };
+            
+            // Gestione click su annulla
+            cancelBtn.onclick = () => {
+                hideAlert();
+                if (typeof cancelCallback === 'function') {
+                    cancelCallback();
+                }
+            };
+            
+            // Chiudi cliccando sull'overlay
+            overlayEl.onclick = () => {
+                hideAlert();
+                if (typeof cancelCallback === 'function') {
+                    cancelCallback();
+                }
+            };
+        }
+
+        // Funzione per stampare l'ordine corrente
+        function printCurrentOrder() {
+            const table = document.getElementById('table-number').value || "?";
+            const name = document.getElementById('table-name').value || "";
+            const people = document.getElementById('people-count').value || 1;
+            const pizzaNotes = document.getElementById('pizza-notes').value || "";
+            
+            // Calcola il totale
+            const total = calculateCurrentTotal();
+            
+            // Prepara il template di stampa
+            const printTemplate = document.getElementById('print-template').cloneNode(true);
+            printTemplate.style.display = 'block';
+            printTemplate.id = 'print-ready';
+            
+            // Popola i dati
+            printTemplate.querySelector('#print-table').textContent = table;
+            printTemplate.querySelector('#print-date').textContent = new Date().toLocaleString();
+            printTemplate.querySelector('#print-operator').textContent = currentOperator;
+            printTemplate.querySelector('#print-total-amount').textContent = total.toFixed(2);
+            
+            // Nome prenotazione (se presente)
+            if (name) {
+                printTemplate.querySelector('#print-name').textContent = name;
+                printTemplate.querySelector('#print-name-container').style.display = 'block';
+            }
+            
+            // Menu ordinati
+            const menuItemsContainer = printTemplate.querySelector('#print-menu-items');
+            menuItemsContainer.innerHTML = '<h4>Menu Ordinati:</h4>';
+            
+            const completo = parseInt(document.getElementById('menu-completo').textContent);
+            const pizza = parseInt(document.getElementById('menu-pizza').textContent);
+            const bambino = parseInt(document.getElementById('menu-bambino').textContent);
+            
+            if (completo > 0) {
+                menuItemsContainer.innerHTML += `<div class="print-order-item">Menu Completo: ${completo} x €20 = €${(completo * 20).toFixed(2)}</div>`;
+            }
+            if (pizza > 0) {
+                menuItemsContainer.innerHTML += `<div class="print-order-item">Menu Solo Pizza: ${pizza} x €15 = €${(pizza * 15).toFixed(2)}</div>`;
+            }
+            if (bambino > 0) {
+                menuItemsContainer.innerHTML += `<div class="print-order-item">Menu Bambino: ${bambino} x €12 = €${(bambino * 12).toFixed(2)}</div>`;
+            }
+            
+            // Bevande
+            const drinkItemsContainer = printTemplate.querySelector('#print-drink-items');
+            drinkItemsContainer.innerHTML = '<h4>Bevande:</h4>';
+            
+            const acquaNaturale = parseInt(document.getElementById('acqua-naturale').textContent);
+            const acquaFrizzante = parseInt(document.getElementById('acqua-frizzante').textContent);
+            const birraMezzo = parseInt(document.getElementById('birra-mezzo').textContent);
+            const birraLitro = parseInt(document.getElementById('birra-litro').textContent);
+            const cocaLattina = parseInt(document.getElementById('coca-lattina').textContent);
+            const cocaMezzo = parseInt(document.getElementById('coca-mezzo').textContent);
+            const cocaLitro = parseInt(document.getElementById('coca-litro').textContent);
+            const vinoMezzo = parseInt(document.getElementById('vino-mezzo').textContent);
+            const vinoLitro = parseInt(document.getElementById('vino-litro').textContent);
+            
+            if (acquaNaturale > 0 || acquaFrizzante > 0) {
+                let acque = [];
+                if (acquaNaturale > 0) acque.push(`${acquaNaturale} Naturale`);
+                if (acquaFrizzante > 0) acque.push(`${acquaFrizzante} Frizzante`);
+                drinkItemsContainer.innerHTML += `<div class="print-order-item">Acqua: ${acque.join(', ')} <span class="free-item">(gratuita)</span></div>`;
+            }
+            
+            if (birraMezzo > 0) {
+                drinkItemsContainer.innerHTML += `<div class="print-order-item">Birra alla Spina (0.5L): ${birraMezzo} x €3 = €${(birraMezzo * 3).toFixed(2)}</div>`;
+            }
+            if (birraLitro > 0) {
+                drinkItemsContainer.innerHTML += `<div class="print-order-item">Birra alla Spina (1L): ${birraLitro} x €6 = €${(birraLitro * 6).toFixed(2)}</div>`;
+            }
+            if (cocaLattina > 0) {
+                drinkItemsContainer.innerHTML += `<div class="print-order-item">Coca Cola Lattina: ${cocaLattina} x €2.5 = €${(cocaLattina * 2.5).toFixed(2)}</div>`;
+            }
+            if (cocaMezzo > 0) {
+                drinkItemsContainer.innerHTML += `<div class="print-order-item">Coca Cola Spina (0.5L): ${cocaMezzo} x €3 = €${(cocaMezzo * 3).toFixed(2)}</div>`;
+            }
+            if (cocaLitro > 0) {
+                drinkItemsContainer.innerHTML += `<div class="print-order-item">Coca Cola Spina (1L): ${cocaLitro} x €6 = €${(cocaLitro * 6).toFixed(2)}</div>`;
+            }
+            if (vinoMezzo > 0) {
+                drinkItemsContainer.innerHTML += `<div class="print-order-item">Vino alla Spina (0.5L): ${vinoMezzo} x €4 = €${(vinoMezzo * 4).toFixed(2)}</div>`;
+            }
+            if (vinoLitro > 0) {
+                drinkItemsContainer.innerHTML += `<div class="print-order-item">Vino alla Spina (1L): ${vinoLitro} x €8 = €${(vinoLitro * 8).toFixed(2)}</div>`;
+            }
+            
+            // Note pizze (se presenti)
+            if (pizzaNotes) {
+                printTemplate.querySelector('#print-notes').innerHTML = pizzaNotes.replace(/\n/g, '<br>');
+                printTemplate.querySelector('#print-notes-container').style.display = 'block';
+            }
+            
+            // Aggiungi il template al documento
+            document.body.appendChild(printTemplate);
+            
+            // Stampa
+            window.print();
+            
+            // Rimuovi il template dopo la stampa
+            setTimeout(() => {
+                document.body.removeChild(printTemplate);
+            }, 1000);
+        }
+
+        // Funzione per stampare un ordine esistente
+        function printOrder(index) {
+            const order = allOrders[index];
+            
+            // Prepara il template di stampa
+            const printTemplate = document.getElementById('print-template').cloneNode(true);
+            printTemplate.style.display = 'block';
+            printTemplate.id = 'print-ready';
+            
+            // Popola i dati
+            printTemplate.querySelector('#print-table').textContent = order.table;
+            printTemplate.querySelector('#print-date').textContent = order.timestamp;
+            printTemplate.querySelector('#print-operator').textContent = order.operator;
+            printTemplate.querySelector('#print-total-amount').textContent = calculateOrderTotal(order).toFixed(2);
+            
+            // Nome prenotazione (se presente)
+            if (order.name) {
+                printTemplate.querySelector('#print-name').textContent = order.name;
+                printTemplate.querySelector('#print-name-container').style.display = 'block';
+            }
+            
+            // Menu ordinati
+            const menuItemsContainer = printTemplate.querySelector('#print-menu-items');
+            menuItemsContainer.innerHTML = '<h4>Menu Ordinati:</h4>';
+            
+            if (order.menus.completo > 0) {
+                menuItemsContainer.innerHTML += `<div class="print-order-item">Menu Completo: ${order.menus.completo} x €20 = €${(order.menus.completo * 20).toFixed(2)}</div>`;
+            }
+            if (order.menus.pizza > 0) {
+                menuItemsContainer.innerHTML += `<div class="print-order-item">Menu Solo Pizza: ${order.menus.pizza} x €15 = €${(order.menus.pizza * 15).toFixed(2)}</div>`;
+            }
+            if (order.menus.bambino > 0) {
+                menuItemsContainer.innerHTML += `<div class="print-order-item">Menu Bambino: ${order.menus.bambino} x €12 = €${(order.menus.bambino * 12).toFixed(2)}</div>`;
+            }
+            
+            // Bevande
+            const drinkItemsContainer = printTemplate.querySelector('#print-drink-items');
+            drinkItemsContainer.innerHTML = '<h4>Bevande:</h4>';
+            
+            if (order.drinks.acquaNaturale > 0 || order.drinks.acquaFrizzante > 0) {
+                let acque = [];
+                if (order.drinks.acquaNaturale > 0) acque.push(`${order.drinks.acquaNaturale} Naturale`);
+                if (order.drinks.acquaFrizzante > 0) acque.push(`${order.drinks.acquaFrizzante} Frizzante`);
+                drinkItemsContainer.innerHTML += `<div class="print-order-item">Acqua: ${acque.join(', ')} <span class="free-item">(gratuita)</span></div>`;
+            }
+            
+            if (order.drinks.birraMezzo > 0) {
+                drinkItemsContainer.innerHTML += `<div class="print-order-item">Birra alla Spina (0.5L): ${order.drinks.birraMezzo} x €3 = €${(order.drinks.birraMezzo * 3).toFixed(2)}</div>`;
+            }
+            if (order.drinks.birraLitro > 0) {
+                drinkItemsContainer.innerHTML += `<div class="print-order-item">Birra alla Spina (1L): ${order.drinks.birraLitro} x €6 = €${(order.drinks.birraLitro * 6).toFixed(2)}</div>`;
+            }
+            if (order.drinks.cocaLattina > 0) {
+                drinkItemsContainer.innerHTML += `<div class="print-order-item">Coca Cola Lattina: ${order.drinks.cocaLattina} x €2.5 = €${(order.drinks.cocaLattina * 2.5).toFixed(2)}</div>`;
+            }
+            if (order.drinks.cocaMezzo > 0) {
+                drinkItemsContainer.innerHTML += `<div class="print-order-item">Coca Cola Spina (0.5L): ${order.drinks.cocaMezzo} x €3 = €${(order.drinks.cocaMezzo * 3).toFixed(2)}</div>`;
+            }
+            if (order.drinks.cocaLitro > 0) {
+                drinkItemsContainer.innerHTML += `<div class="print-order-item">Coca Cola Spina (1L): ${order.drinks.cocaLitro} x €6 = €${(order.drinks.cocaLitro * 6).toFixed(2)}</div>`;
+            }
+            if (order.drinks.vinoMezzo > 0) {
+                drinkItemsContainer.innerHTML += `<div class="print-order-item">Vino alla Spina (0.5L): ${order.drinks.vinoMezzo} x €4 = €${(order.drinks.vinoMezzo * 4).toFixed(2)}</div>`;
+            }
+            if (order.drinks.vinoLitro > 0) {
+                drinkItemsContainer.innerHTML += `<div class="print-order-item">Vino alla Spina (1L): ${order.drinks.vinoLitro} x €8 = €${(order.drinks.vinoLitro * 8).toFixed(2)}</div>`;
+            }
+            
+            // Note pizze (se presenti)
+            if (order.pizzaNotes) {
+                printTemplate.querySelector('#print-notes').innerHTML = order.pizzaNotes.replace(/\n/g, '<br>');
+                printTemplate.querySelector('#print-notes-container').style.display = 'block';
+            }
+            
+            // Aggiungi il template al documento
+            document.body.appendChild(printTemplate);
+            
+            // Stampa
+            window.print();
+            
+            // Rimuovi il template dopo la stampa
+            setTimeout(() => {
+                document.body.removeChild(printTemplate);
+            }, 1000);
         }
     </script>
 </body>
