@@ -75,6 +75,8 @@
             --dark: #2c3e50;
             --success: #27ae60;
             --info: #3498db;
+            --warning: #f39c12;
+            --danger: #e74c3c;
         }
         * {
             box-sizing: border-box;
@@ -172,6 +174,18 @@
         }
         .btn-success:hover {
             background-color: #219653;
+        }
+        .btn-warning {
+            background-color: var(--warning);
+        }
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+        .btn-danger {
+            background-color: var(--danger);
+        }
+        .btn-danger:hover {
+            background-color: #c0392b;
         }
         .menu-card {
             background: var(--light);
@@ -359,6 +373,11 @@
         
         .view-orders-btn {
             background-color: #2c3e50;
+            color: white;
+        }
+        
+        .kitchen-btn {
+            background-color: #f39c12;
             color: white;
         }
         
@@ -564,6 +583,159 @@
             background-color: #c0392b;
         }
 
+        /* Stili per la cucina */
+        .kitchen-screen {
+            background-color: #f8f9fa;
+        }
+        
+        .kitchen-orders {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .kitchen-order-card {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--warning);
+        }
+        
+        .kitchen-order-card.completed {
+            border-left-color: var(--success);
+            opacity: 0.8;
+        }
+        
+        .kitchen-order-card.urgent {
+            border-left-color: var(--danger);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .kitchen-order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        
+        .kitchen-order-title {
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--primary);
+        }
+        
+        .kitchen-order-time {
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .kitchen-order-customer {
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .kitchen-order-items {
+            margin-top: 10px;
+        }
+        
+        .kitchen-order-item {
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .kitchen-order-item-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .kitchen-order-item-notes {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        
+        .kitchen-order-item-status {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .status-waiting {
+            background-color: #f1c40f;
+            color: #333;
+        }
+        
+        .status-preparing {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .status-ready {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .status-delivered {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .kitchen-filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .kitchen-filter-btn {
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        
+        .kitchen-filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .kitchen-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .kitchen-no-orders {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            grid-column: 1 / -1;
+        }
+        
+        .kitchen-priority {
+            background-color: var(--danger);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        
         /* Stili per dispositivi mobili */
         @media (max-width: 600px) {
             .container {
@@ -608,6 +780,10 @@
             
             .modal-tab {
                 padding: 6px 8px;
+            }
+            
+            .kitchen-orders {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -656,6 +832,9 @@
                 </div>
                 <div class="main-btn view-orders-btn" onclick="showOrdersScreen()">
                     VISUALIZZA COMANDE
+                </div>
+                <div class="main-btn kitchen-btn" onclick="showKitchenScreen()">
+                    AREA CUCINA
                 </div>
             </div>
         </div>
@@ -878,6 +1057,28 @@
                 <button class="btn btn-info" onclick="showSummaryModal('current')">Mostra Riepilogo</button>
             </div>
         </div>
+
+        <!-- Schermata cucina -->
+        <div id="kitchen-screen" class="screen kitchen-screen">
+            <h2>Area Cucina</h2>
+            
+            <div class="button-group">
+                <button class="btn" onclick="showScreen('main')">Torna al Menu</button>
+                <button class="btn btn-info" onclick="refreshKitchenOrders()">Aggiorna</button>
+            </div>
+            
+            <div class="kitchen-filter">
+                <button class="kitchen-filter-btn active" onclick="filterKitchenOrders('all')">Tutti</button>
+                <button class="kitchen-filter-btn" onclick="filterKitchenOrders('waiting')">In Attesa</button>
+                <button class="kitchen-filter-btn" onclick="filterKitchenOrders('preparing')">In Preparazione</button>
+                <button class="kitchen-filter-btn" onclick="filterKitchenOrders('ready')">Pronti</button>
+                <button class="kitchen-filter-btn" onclick="filterKitchenOrders('completed')">Completati</button>
+            </div>
+            
+            <div id="kitchen-orders" class="kitchen-orders">
+                <!-- Ordini verranno caricati qui dinamicamente -->
+            </div>
+        </div>
     </div>
 
     <!-- Modal per il riepilogo -->
@@ -970,12 +1171,29 @@
             },
             pizzaNotes: "",
             dessertNotes: "",
-            timestamp: ""
+            timestamp: "",
+            status: "waiting", // waiting, preparing, ready, completed
+            courses: {
+                antipasto: {
+                    status: "waiting", // waiting, preparing, ready, delivered
+                    notes: ""
+                },
+                pizza: {
+                    status: "waiting",
+                    notes: ""
+                },
+                dessert: {
+                    status: "waiting",
+                    notes: ""
+                }
+            },
+            priority: false
         };
 
         let allOrders = JSON.parse(localStorage.getItem('pizzeria-orders')) || [];
         let currentlyEditingIndex = -1;
         const APP_PIN = "1234"; // PIN fisso per l'accesso (da cambiare in produzione)
+        let currentKitchenFilter = "all";
 
         // Mostra splash screen all'avvio
         document.addEventListener('DOMContentLoaded', () => {
@@ -1066,12 +1284,20 @@
                 case 'edit-order':
                     document.getElementById('edit-order-screen').classList.add('active');
                     break;
+                case 'kitchen':
+                    showKitchenScreen();
+                    break;
             }
         }
 
         function showMainScreen() {
             document.getElementById('main-screen').classList.add('active');
             document.getElementById('operator-display').textContent = `Operatore: ${currentOperator}`;
+        }
+
+        function showKitchenScreen() {
+            document.getElementById('kitchen-screen').classList.add('active');
+            refreshKitchenOrders();
         }
 
         function setOperator() {
@@ -1177,11 +1403,17 @@
                     if (order.drinks.vinoRossoLitro > 0) drinks.push(`${order.drinks.vinoRossoLitro} Vino Rosso 1L`);
                     orderInfo += drinks.join(', ') + `</p>`;
                     
+                    // Stato ordine
+                    orderInfo += `<p><strong>Stato:</strong> ${getStatusText(order.status)}</p>`;
+                    
                     // Pulsanti azione
                     orderInfo += `
                         <div class="order-actions">
                             <button class="btn" onclick="editOrder(${order.originalIndex})">Modifica</button>
                             <button class="btn btn-secondary" onclick="deleteOrder(${order.originalIndex})">Elimina</button>
+                            <button class="btn btn-info" onclick="printOrder(${order.originalIndex})">Stampa</button>
+                            ${order.status !== 'completed' ? `<button class="btn btn-success" onclick="markOrderAsCompleted(${order.originalIndex})">Completa</button>` : ''}
+                            ${order.priority ? `<button class="btn btn-warning" onclick="toggleOrderPriority(${order.originalIndex}, false)">Rimuovi Priorità</button>` : `<button class="btn btn-danger" onclick="toggleOrderPriority(${order.originalIndex}, true)">Aggiungi Priorità</button>`}
                         </div>
                     `;
                     
@@ -1191,6 +1423,48 @@
                 
                 container.appendChild(tableSection);
             }
+        }
+
+        function getStatusText(status) {
+            switch(status) {
+                case 'waiting': return 'In Attesa';
+                case 'preparing': return 'In Preparazione';
+                case 'ready': return 'Pronto';
+                case 'completed': return 'Completato';
+                default: return status;
+            }
+        }
+
+        function markOrderAsCompleted(index) {
+            allOrders[index].status = 'completed';
+            allOrders[index].courses.antipasto.status = 'delivered';
+            allOrders[index].courses.pizza.status = 'delivered';
+            allOrders[index].courses.dessert.status = 'delivered';
+            localStorage.setItem('pizzeria-orders', JSON.stringify(allOrders));
+            
+            showCustomAlert(
+                "Ordine Completato", 
+                "L'ordine è stato segnato come completato",
+                function() {
+                    renderOrdersManagement();
+                }
+            );
+        }
+
+        function toggleOrderPriority(index, priority) {
+            allOrders[index].priority = priority;
+            localStorage.setItem('pizzeria-orders', JSON.stringify(allOrders));
+            
+            showCustomAlert(
+                priority ? "Priorità Aggiunta" : "Priorità Rimossa", 
+                priority ? "L'ordine è stato marcato come prioritario" : "L'ordine non è più prioritario",
+                function() {
+                    renderOrdersManagement();
+                    if (document.getElementById('kitchen-screen').classList.contains('active')) {
+                        refreshKitchenOrders();
+                    }
+                }
+            );
         }
 
         // Funzione per modificare un ordine esistente
@@ -1536,7 +1810,23 @@
                 },
                 pizzaNotes: "",
                 dessertNotes: "",
-                timestamp: ""
+                timestamp: "",
+                status: "waiting",
+                courses: {
+                    antipasto: {
+                        status: "waiting",
+                        notes: ""
+                    },
+                    pizza: {
+                        status: "waiting",
+                        notes: ""
+                    },
+                    dessert: {
+                        status: "waiting",
+                        notes: ""
+                    }
+                },
+                priority: false
             };
             
             // Resetta i valori nell'interfaccia
@@ -2203,6 +2493,274 @@
             setTimeout(() => {
                 document.body.removeChild(printTemplate);
             }, 1000);
+        }
+
+        // Funzioni per la gestione della cucina
+        function refreshKitchenOrders() {
+            const container = document.getElementById('kitchen-orders');
+            container.innerHTML = '';
+            
+            if (allOrders.length === 0) {
+                container.innerHTML = '<div class="kitchen-no-orders">Nessun ordine in cucina</div>';
+                return;
+            }
+            
+            // Ordina gli ordini: prima quelli prioritari, poi per timestamp (dal più vecchio)
+            const sortedOrders = [...allOrders].sort((a, b) => {
+                if (a.priority && !b.priority) return -1;
+                if (!a.priority && b.priority) return 1;
+                return new Date(a.timestamp) - new Date(b.timestamp);
+            });
+            
+            let hasFilteredOrders = false;
+            
+            sortedOrders.forEach((order, index) => {
+                // Filtra gli ordini in base alla selezione
+                if (currentKitchenFilter === 'all' || 
+                    (currentKitchenFilter === 'waiting' && order.status === 'waiting') ||
+                    (currentKitchenFilter === 'preparing' && order.status === 'preparing') ||
+                    (currentKitchenFilter === 'ready' && order.status === 'ready') ||
+                    (currentKitchenFilter === 'completed' && order.status === 'completed')) {
+                    
+                    hasFilteredOrders = true;
+                    
+                    const orderElement = document.createElement('div');
+                    orderElement.className = `kitchen-order-card ${order.status === 'completed' ? 'completed' : ''} ${order.priority ? 'urgent' : ''}`;
+                    
+                    let orderHtml = `
+                        <div class="kitchen-order-header">
+                            <div class="kitchen-order-title">Tavolo ${order.table} ${order.priority ? '<span class="kitchen-priority">PRIORITÀ</span>' : ''}</div>
+                            <div class="kitchen-order-time">${order.timestamp}</div>
+                        </div>
+                        <div class="kitchen-order-customer">${order.customer || 'Non specificato'} - ${order.people} persone</div>
+                        <div class="kitchen-order-items">
+                    `;
+                    
+                    // Menu Completo
+                    if (order.menus.completo > 0) {
+                        orderHtml += `
+                            <div class="kitchen-order-item">
+                                <div class="kitchen-order-item-title">Menu Completo (${order.menus.completo})</div>
+                                <div class="kitchen-order-item-status">
+                                    <span class="status-badge ${getStatusClass(order.courses.antipasto.status)}">${getCourseStatusText(order.courses.antipasto.status)}</span>
+                                    <button class="btn btn-sm" onclick="updateCourseStatus(${index}, 'antipasto', 'preparing')">Prepara</button>
+                                    <button class="btn btn-sm btn-success" onclick="updateCourseStatus(${index}, 'antipasto', 'ready')">Pronto</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="updateCourseStatus(${index}, 'antipasto', 'delivered')">Consegnato</button>
+                                </div>
+                                ${order.courses.antipasto.notes ? `<div class="kitchen-order-item-notes">${order.courses.antipasto.notes}</div>` : ''}
+                            </div>
+                            
+                            <div class="kitchen-order-item">
+                                <div class="kitchen-order-item-title">Pizze</div>
+                                ${order.pizzaNotes ? `<div class="kitchen-order-item-notes">${order.pizzaNotes.replace(/\n/g, '<br>')}</div>` : ''}
+                                <div class="kitchen-order-item-status">
+                                    <span class="status-badge ${getStatusClass(order.courses.pizza.status)}">${getCourseStatusText(order.courses.pizza.status)}</span>
+                                    <button class="btn btn-sm" onclick="updateCourseStatus(${index}, 'pizza', 'preparing')">Prepara</button>
+                                    <button class="btn btn-sm btn-success" onclick="updateCourseStatus(${index}, 'pizza', 'ready')">Pronto</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="updateCourseStatus(${index}, 'pizza', 'delivered')">Consegnato</button>
+                                </div>
+                            </div>
+                            
+                            <div class="kitchen-order-item">
+                                <div class="kitchen-order-item-title">Dolci</div>
+                                ${order.dessertNotes ? `<div class="kitchen-order-item-notes">${order.dessertNotes.replace(/\n/g, '<br>')}</div>` : ''}
+                                <div class="kitchen-order-item-status">
+                                    <span class="status-badge ${getStatusClass(order.courses.dessert.status)}">${getCourseStatusText(order.courses.dessert.status)}</span>
+                                    <button class="btn btn-sm" onclick="updateCourseStatus(${index}, 'dessert', 'preparing')">Prepara</button>
+                                    <button class="btn btn-sm btn-success" onclick="updateCourseStatus(${index}, 'dessert', 'ready')">Pronto</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="updateCourseStatus(${index}, 'dessert', 'delivered')">Consegnato</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    // Menu Solo Pizza
+                    if (order.menus.pizza > 0) {
+                        orderHtml += `
+                            <div class="kitchen-order-item">
+                                <div class="kitchen-order-item-title">Menu Solo Pizza (${order.menus.pizza})</div>
+                                ${order.pizzaNotes ? `<div class="kitchen-order-item-notes">${order.pizzaNotes.replace(/\n/g, '<br>')}</div>` : ''}
+                                <div class="kitchen-order-item-status">
+                                    <span class="status-badge ${getStatusClass(order.courses.pizza.status)}">${getCourseStatusText(order.courses.pizza.status)}</span>
+                                    <button class="btn btn-sm" onclick="updateCourseStatus(${index}, 'pizza', 'preparing')">Prepara</button>
+                                    <button class="btn btn-sm btn-success" onclick="updateCourseStatus(${index}, 'pizza', 'ready')">Pronto</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="updateCourseStatus(${index}, 'pizza', 'delivered')">Consegnato</button>
+                                </div>
+                            </div>
+                            
+                            <div class="kitchen-order-item">
+                                <div class="kitchen-order-item-title">Dolci</div>
+                                ${order.dessertNotes ? `<div class="kitchen-order-item-notes">${order.dessertNotes.replace(/\n/g, '<br>')}</div>` : ''}
+                                <div class="kitchen-order-item-status">
+                                    <span class="status-badge ${getStatusClass(order.courses.dessert.status)}">${getCourseStatusText(order.courses.dessert.status)}</span>
+                                    <button class="btn btn-sm" onclick="updateCourseStatus(${index}, 'dessert', 'preparing')">Prepara</button>
+                                    <button class="btn btn-sm btn-success" onclick="updateCourseStatus(${index}, 'dessert', 'ready')">Pronto</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="updateCourseStatus(${index}, 'dessert', 'delivered')">Consegnato</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    // Menu Bambino
+                    if (order.menus.bambino > 0) {
+                        orderHtml += `
+                            <div class="kitchen-order-item">
+                                <div class="kitchen-order-item-title">Menu Bambino (${order.menus.bambino})</div>
+                                ${order.pizzaNotes ? `<div class="kitchen-order-item-notes">${order.pizzaNotes.replace(/\n/g, '<br>')}</div>` : ''}
+                                <div class="kitchen-order-item-status">
+                                    <span class="status-badge ${getStatusClass(order.courses.pizza.status)}">${getCourseStatusText(order.courses.pizza.status)}</span>
+                                    <button class="btn btn-sm" onclick="updateCourseStatus(${index}, 'pizza', 'preparing')">Prepara</button>
+                                    <button class="btn btn-sm btn-success" onclick="updateCourseStatus(${index}, 'pizza', 'ready')">Pronto</button>
+                                    <button class="btn btn-sm btn-secondary" onclick="updateCourseStatus(${index}, 'pizza', 'delivered')">Consegnato</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    // Bevande
+                    if (order.drinks.acquaNaturale > 0 || order.drinks.acquaFrizzante > 0 || 
+                        order.drinks.birraMezzo > 0 || order.drinks.birraLitro > 0 || 
+                        order.drinks.cocaZeroLattina > 0 || order.drinks.cocaLattina > 0 || 
+                        order.drinks.cocaMezzo > 0 || order.drinks.cocaLitro > 0 || 
+                        order.drinks.vinoBiancoMezzo > 0 || order.drinks.vinoBiancoLitro > 0 || 
+                        order.drinks.vinoRossoMezzo > 0 || order.drinks.vinoRossoLitro > 0) {
+                        
+                        orderHtml += `<div class="kitchen-order-item">
+                            <div class="kitchen-order-item-title">Bevande</div>
+                            <div class="kitchen-order-item-notes">`;
+                        
+                        let drinks = [];
+                        if (order.drinks.acquaNaturale > 0) drinks.push(`${order.drinks.acquaNaturale} Acqua Naturale`);
+                        if (order.drinks.acquaFrizzante > 0) drinks.push(`${order.drinks.acquaFrizzante} Acqua Frizzante`);
+                        if (order.drinks.birraMezzo > 0) drinks.push(`${order.drinks.birraMezzo} Birra 0.5L`);
+                        if (order.drinks.birraLitro > 0) drinks.push(`${order.drinks.birraLitro} Birra 1L`);
+                        if (order.drinks.cocaZeroLattina > 0) drinks.push(`${order.drinks.cocaZeroLattina} Coca Zero Lattina`);
+                        if (order.drinks.cocaLattina > 0) drinks.push(`${order.drinks.cocaLattina} Coca Lattina`);
+                        if (order.drinks.cocaMezzo > 0) drinks.push(`${order.drinks.cocaMezzo} Coca 0.5L`);
+                        if (order.drinks.cocaLitro > 0) drinks.push(`${order.drinks.cocaLitro} Coca 1L`);
+                        if (order.drinks.vinoBiancoMezzo > 0) drinks.push(`${order.drinks.vinoBiancoMezzo} Vino Bianco 0.5L`);
+                        if (order.drinks.vinoBiancoLitro > 0) drinks.push(`${order.drinks.vinoBiancoLitro} Vino Bianco 1L`);
+                        if (order.drinks.vinoRossoMezzo > 0) drinks.push(`${order.drinks.vinoRossoMezzo} Vino Rosso 0.5L`);
+                        if (order.drinks.vinoRossoLitro > 0) drinks.push(`${order.drinks.vinoRossoLitro} Vino Rosso 1L`);
+                        
+                        orderHtml += drinks.join(', ') + `
+                            </div>
+                        </div>`;
+                    }
+                    
+                    orderHtml += `</div>`; // chiude kitchen-order-items
+                    
+                    // Azioni
+                    orderHtml += `
+                        <div class="kitchen-actions">
+                            <button class="btn btn-sm" onclick="updateOrderStatus(${index}, 'preparing')">Inizia Preparazione</button>
+                            <button class="btn btn-sm btn-success" onclick="updateOrderStatus(${index}, 'ready')">Ordine Pronto</button>
+                            <button class="btn btn-sm btn-secondary" onclick="updateOrderStatus(${index}, 'completed')">Completa Ordine</button>
+                            <button class="btn btn-sm btn-info" onclick="printOrder(${index})">Stampa</button>
+                        </div>
+                    `;
+                    
+                    orderElement.innerHTML = orderHtml;
+                    container.appendChild(orderElement);
+                }
+            });
+            
+            if (!hasFilteredOrders) {
+                container.innerHTML = '<div class="kitchen-no-orders">Nessun ordine corrisponde al filtro selezionato</div>';
+            }
+        }
+
+        function getStatusClass(status) {
+            switch(status) {
+                case 'waiting': return 'status-waiting';
+                case 'preparing': return 'status-preparing';
+                case 'ready': return 'status-ready';
+                case 'delivered': return 'status-delivered';
+                default: return '';
+            }
+        }
+
+        function getCourseStatusText(status) {
+            switch(status) {
+                case 'waiting': return 'In Attesa';
+                case 'preparing': return 'In Preparazione';
+                case 'ready': return 'Pronto';
+                case 'delivered': return 'Consegnato';
+                default: return status;
+            }
+        }
+
+        function filterKitchenOrders(filter) {
+            currentKitchenFilter = filter;
+            
+            // Aggiorna lo stato attivo dei pulsanti di filtro
+            document.querySelectorAll('.kitchen-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            
+            refreshKitchenOrders();
+        }
+
+        function updateCourseStatus(orderIndex, course, newStatus) {
+            allOrders[orderIndex].courses[course].status = newStatus;
+            
+            // Aggiorna lo stato generale dell'ordine se necessario
+            updateOverallOrderStatus(orderIndex);
+            
+            localStorage.setItem('pizzeria-orders', JSON.stringify(allOrders));
+            refreshKitchenOrders();
+        }
+
+        function updateOrderStatus(orderIndex, newStatus) {
+            allOrders[orderIndex].status = newStatus;
+            
+            // Se stiamo impostando lo stato a 'preparing' o 'ready', aggiorniamo anche le portate
+            if (newStatus === 'preparing') {
+                // Imposta tutte le portate non consegnate a 'preparing'
+                for (const course in allOrders[orderIndex].courses) {
+                    if (allOrders[orderIndex].courses[course].status !== 'delivered') {
+                        allOrders[orderIndex].courses[course].status = 'preparing';
+                    }
+                }
+            } else if (newStatus === 'ready') {
+                // Imposta tutte le portate non consegnate a 'ready'
+                for (const course in allOrders[orderIndex].courses) {
+                    if (allOrders[orderIndex].courses[course].status !== 'delivered') {
+                        allOrders[orderIndex].courses[course].status = 'ready';
+                    }
+                }
+            } else if (newStatus === 'completed') {
+                // Imposta tutte le portate a 'delivered'
+                for (const course in allOrders[orderIndex].courses) {
+                    allOrders[orderIndex].courses[course].status = 'delivered';
+                }
+            }
+            
+            localStorage.setItem('pizzeria-orders', JSON.stringify(allOrders));
+            refreshKitchenOrders();
+        }
+
+        function updateOverallOrderStatus(orderIndex) {
+            const order = allOrders[orderIndex];
+            
+            // Se tutte le portate sono consegnate, l'ordine è completato
+            if (Object.values(order.courses).every(course => course.status === 'delivered')) {
+                order.status = 'completed';
+            } 
+            // Se almeno una portata è pronta, l'ordine è pronto
+            else if (Object.values(order.courses).some(course => course.status === 'ready')) {
+                order.status = 'ready';
+            }
+            // Se almeno una portata è in preparazione, l'ordine è in preparazione
+            else if (Object.values(order.courses).some(course => course.status === 'preparing')) {
+                order.status = 'preparing';
+            }
+            // Altrimenti l'ordine è in attesa
+            else {
+                order.status = 'waiting';
+            }
         }
     </script>
 </body>
