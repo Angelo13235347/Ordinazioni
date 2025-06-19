@@ -5,68 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestione Comande - Pizzeria</title>
     <style>
-        /* Splash Screen Animation */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            animation: fadeIn 0.5s ease-out;
-        }
-        
-        #splash-logo {
-            width: 200px;
-            height: 200px;
-            object-fit: contain;
-            animation: pulse 2s infinite ease-in-out;
-        }
-        
-        #splash-text {
-            margin-top: 20px;
-            font-size: 24px;
-            font-weight: bold;
-            color: #2c3e50;
-            animation: slideUp 0.8s ease-out 0.3s both;
-        }
-        
-        #splash-loading {
-            margin-top: 30px;
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #e74c3c;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         /* Stili generali */
         :root {
             --primary: #2c3e50;
@@ -78,16 +16,19 @@
             --warning: #f39c12;
             --danger: #e74c3c;
         }
+        
         * {
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+        
         body {
             margin: 0;
             padding: 10px;
             background-color: #f5f5f5;
             color: #333;
         }
+        
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -96,16 +37,19 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             overflow: hidden;
         }
+        
         header {
             background-color: var(--primary);
             color: white;
             padding: 15px;
             text-align: center;
         }
+        
         h1 {
             margin: 0;
             font-size: 22px;
         }
+        
         h2 {
             color: var(--primary);
             margin-top: 0;
@@ -113,21 +57,26 @@
             border-bottom: 2px solid var(--secondary);
             padding-bottom: 8px;
         }
+        
         h3 {
             color: var(--primary);
             margin-top: 15px;
             font-size: 18px;
         }
+        
         .screen {
             padding: 15px;
             display: none;
         }
+        
         .screen.active {
             display: block;
         }
+        
         .form-group {
             margin-bottom: 12px;
         }
+        
         label {
             display: block;
             margin-bottom: 5px;
@@ -135,6 +84,7 @@
             color: var(--dark);
             font-size: 14px;
         }
+        
         input, select, textarea {
             width: 100%;
             padding: 8px;
@@ -142,6 +92,7 @@
             border-radius: 5px;
             font-size: 16px;
         }
+        
         .btn {
             background-color: var(--secondary);
             color: white;
@@ -154,39 +105,51 @@
             margin-top: 8px;
             transition: background 0.3s;
         }
+        
         .btn:hover {
             background-color: #c0392b;
         }
+        
         .btn-secondary {
             background-color: var(--primary);
         }
+        
         .btn-secondary:hover {
             background-color: #1a252f;
         }
+        
         .btn-info {
             background-color: var(--info);
         }
+        
         .btn-info:hover {
             background-color: #2980b9;
         }
+        
         .btn-success {
             background-color: var(--success);
         }
+        
         .btn-success:hover {
             background-color: #219653;
         }
+        
         .btn-warning {
             background-color: var(--warning);
         }
+        
         .btn-warning:hover {
             background-color: #e67e22;
         }
+        
         .btn-danger {
             background-color: var(--danger);
         }
+        
         .btn-danger:hover {
             background-color: #c0392b;
         }
+        
         .menu-card {
             background: var(--light);
             border-radius: 8px;
@@ -194,32 +157,38 @@
             margin-bottom: 12px;
             border-left: 4px solid var(--secondary);
         }
+        
         .menu-title {
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 8px;
             color: var(--primary);
         }
+        
         .menu-price {
             float: right;
             font-weight: bold;
             color: var(--secondary);
             font-size: 15px;
         }
+        
         .menu-description {
             font-size: 13px;
             color: #666;
             margin-bottom: 8px;
         }
+        
         .quantity-control {
             display: flex;
             align-items: center;
             justify-content: flex-end;
         }
+        
         .quantity-label {
             flex-grow: 1;
             font-size: 14px;
         }
+        
         .quantity-btn {
             background: var(--primary);
             color: white;
@@ -233,12 +202,14 @@
             align-items: center;
             justify-content: center;
         }
+        
         .quantity-value {
             margin: 0 12px;
             font-size: 16px;
             min-width: 18px;
             text-align: center;
         }
+        
         .order-summary {
             background: #f9f9f9;
             padding: 12px;
@@ -246,12 +217,14 @@
             margin-top: 15px;
             margin-bottom: 15px;
         }
+        
         .summary-item {
             margin-bottom: 8px;
             padding-bottom: 8px;
             border-bottom: 1px dashed #ddd;
             font-size: 14px;
         }
+        
         .total {
             font-size: 16px;
             font-weight: bold;
@@ -259,20 +232,21 @@
             margin-top: 12px;
             text-align: right;
         }
+        
         .notes-section {
             margin-top: 15px;
         }
-        .pizza-notes, .dessert-notes {
-            margin-top: 12px;
-        }
+        
         .error {
             color: var(--secondary);
             font-size: 13px;
             margin-top: 5px;
         }
+        
         .orders-list {
             margin-top: 15px;
         }
+        
         .order-card {
             background: white;
             border-radius: 8px;
@@ -280,76 +254,65 @@
             margin-bottom: 12px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
+        
         .order-header {
             display: flex;
             justify-content: space-between;
             margin-bottom: 8px;
         }
+        
         .order-title {
             font-weight: 600;
             color: var(--primary);
             font-size: 15px;
         }
+        
         .order-meta {
             font-size: 13px;
             color: #666;
         }
+        
         .button-group {
             display: flex;
             justify-content: space-between;
             margin-top: 15px;
             flex-wrap: wrap;
         }
+        
         .max-reached {
             color: var(--secondary);
             font-weight: bold;
             margin-left: 8px;
             font-size: 13px;
         }
+        
         .summary-btn {
             background-color: var(--success);
             margin-bottom: 15px;
         }
+        
         .summary-btn:hover {
             background-color: #219653;
         }
+        
         .free-item {
             color: var(--success);
             font-weight: bold;
         }
-        .modal-tabs {
-            display: flex;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #ddd;
-        }
-        .modal-tab {
-            padding: 8px 12px;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
-            font-size: 14px;
-        }
-        .modal-tab.active {
-            border-bottom: 2px solid var(--secondary);
-            font-weight: bold;
-        }
-        .modal-content {
-            display: none;
-        }
-        .modal-content.active {
-            display: block;
-        }
+        
         .water-types {
             display: flex;
             gap: 15px;
             margin-top: 8px;
             flex-wrap: wrap;
         }
+        
         .water-type {
             flex: 1;
             min-width: 120px;
         }
         
-        /* Nuovi stili */
+        /* Menu principale */
         .main-menu {
             display: flex;
             flex-direction: column;
@@ -382,16 +345,8 @@
         }
         
         .main-btn:hover {
-            transform: scale(1.03);
+            transform: scale(1.02);
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-        
-        .edit-btn {
-            background-color: #3498db;
-        }
-        
-        .edit-btn:hover {
-            background-color: #2980b9;
         }
         
         .order-actions {
@@ -411,7 +366,7 @@
             font-weight: bold;
         }
 
-        /* Stili per gli alert personalizzati */
+        /* Alert personalizzati */
         .custom-alert {
             position: fixed;
             top: 50%;
@@ -475,64 +430,7 @@
             display: none;
         }
 
-        /* Stili per la stampa (nascosto) */
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            .print-section, .print-section * {
-                visibility: visible;
-            }
-            .print-section {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                font-size: 14px;
-                padding: 10px;
-            }
-            .no-print {
-                display: none !important;
-            }
-            .print-header {
-                text-align: center;
-                margin-bottom: 15px;
-                border-bottom: 2px solid #000;
-                padding-bottom: 5px;
-            }
-            .print-title {
-                font-size: 20px;
-                margin-bottom: 5px;
-            }
-            .print-subtitle {
-                font-size: 16px;
-                color: #555;
-            }
-            .print-order-item {
-                margin-bottom: 8px;
-                padding-bottom: 8px;
-                border-bottom: 1px dashed #ddd;
-            }
-            .print-total {
-                font-size: 18px;
-                font-weight: bold;
-                text-align: right;
-                margin-top: 15px;
-            }
-            .print-notes {
-                margin-top: 15px;
-                font-style: italic;
-                font-size: 13px;
-            }
-            .print-footer {
-                margin-top: 20px;
-                text-align: center;
-                font-size: 12px;
-                color: #777;
-            }
-        }
-
-        /* Stili per il blocco schermo */
+        /* Schermata di blocco */
         #lock-screen {
             position: fixed;
             top: 0;
@@ -583,7 +481,7 @@
             background-color: #c0392b;
         }
 
-        /* Stili per la cucina */
+        /* Area cucina */
         .kitchen-screen {
             background-color: #f8f9fa;
         }
@@ -610,7 +508,6 @@
         
         .kitchen-order-card.urgent {
             border-left-color: var(--danger);
-            animation: pulse 1.5s infinite;
         }
         
         .kitchen-order-header {
@@ -713,13 +610,6 @@
             border-color: var(--primary);
         }
         
-        .kitchen-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-        
         .kitchen-no-orders {
             text-align: center;
             padding: 20px;
@@ -736,7 +626,114 @@
             margin-left: 8px;
         }
         
-        /* Stili per dispositivi mobili */
+        /* Modal riepilogo */
+        #summary-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-tabs {
+            display: flex;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .modal-tab {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            font-size: 14px;
+        }
+        
+        .modal-tab.active {
+            border-bottom: 2px solid var(--secondary);
+            font-weight: bold;
+        }
+        
+        .modal-content-section {
+            display: none;
+        }
+        
+        .modal-content-section.active {
+            display: block;
+        }
+
+        /* Stampa */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .print-section, .print-section * {
+                visibility: visible;
+            }
+            .print-section {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                font-size: 14px;
+                padding: 10px;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-header {
+                text-align: center;
+                margin-bottom: 15px;
+                border-bottom: 2px solid #000;
+                padding-bottom: 5px;
+            }
+            .print-title {
+                font-size: 20px;
+                margin-bottom: 5px;
+            }
+            .print-subtitle {
+                font-size: 16px;
+                color: #555;
+            }
+            .print-order-item {
+                margin-bottom: 8px;
+                padding-bottom: 8px;
+                border-bottom: 1px dashed #ddd;
+            }
+            .print-total {
+                font-size: 18px;
+                font-weight: bold;
+                text-align: right;
+                margin-top: 15px;
+            }
+            .print-notes {
+                margin-top: 15px;
+                font-style: italic;
+                font-size: 13px;
+            }
+            .print-footer {
+                margin-top: 20px;
+                text-align: center;
+                font-size: 12px;
+                color: #777;
+            }
+        }
+
+        /* Mobile */
         @media (max-width: 600px) {
             .container {
                 border-radius: 0;
@@ -774,14 +771,6 @@
                 margin-bottom: 5px;
             }
             
-            .modal-tabs {
-                font-size: 12px;
-            }
-            
-            .modal-tab {
-                padding: 6px 8px;
-            }
-            
             .kitchen-orders {
                 grid-template-columns: 1fr;
             }
@@ -789,13 +778,6 @@
     </style>
 </head>
 <body>
-    <!-- Splash Screen -->
-    <div id="splash-screen">
-       <img id="splash-logo" src="logo.jpg" alt="Logo Pizzeria">
-        <div id="splash-text">Gestione Comande Pizzeria</div>
-        <div id="splash-loading"></div>
-    </div>
-
     <!-- Schermata di blocco -->
     <div id="lock-screen" style="display: none;">
         <div class="lock-form">
@@ -806,7 +788,7 @@
         </div>
     </div>
 
-    <!-- Custom Alert Dialog -->
+    <!-- Alert personalizzato -->
     <div id="customAlertOverlay" class="custom-alert-overlay"></div>
     <div id="customAlert" class="custom-alert">
         <h3 id="customAlertTitle">Conferma</h3>
@@ -818,7 +800,7 @@
     </div>
 
     <!-- Applicazione -->
-    <div class="container" style="display: none;">
+    <div class="container">
         <header>
             <h1>Gestione Comande Pizzeria</h1>
             <div id="operator-display"></div>
@@ -839,7 +821,7 @@
             </div>
         </div>
 
-        <!-- Schermata operatore (solo per primo accesso) -->
+        <!-- Schermata operatore -->
         <div id="operator-screen" class="screen">
             <div class="form-group">
                 <label for="operator-name">Nome Operatore</label>
@@ -1082,14 +1064,14 @@
     </div>
 
     <!-- Modal per il riepilogo -->
-    <div id="summary-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
-        <div style="background: white; padding: 15px; border-radius: 10px; max-width: 800px; width: 90%; max-height: 80vh; overflow-y: auto;">
+    <div id="summary-modal">
+        <div class="modal-content">
             <div class="modal-tabs">
                 <div id="current-tab" class="modal-tab active" onclick="switchTab('current')">Ordine Corrente</div>
                 <div id="all-tab" class="modal-tab" onclick="switchTab('all')">Tutti gli Ordini</div>
             </div>
             
-            <div id="current-summary" class="modal-content active">
+            <div id="current-summary" class="modal-content-section active">
                 <h2 style="margin-top: 0;">Riepilogo Ordine</h2>
                 <div id="modal-table-summary" class="order-summary"></div>
                 <div id="modal-drinks-summary" class="order-summary"></div>
@@ -1098,7 +1080,7 @@
                 <button class="btn" onclick="printCurrentOrder()">Stampa Ordine</button>
             </div>
             
-            <div id="all-summary" class="modal-content">
+            <div id="all-summary" class="modal-content-section">
                 <h2 style="margin-top: 0;">Riepilogo di Tutti gli Ordini</h2>
                 <div id="modal-all-orders" class="order-summary"></div>
             </div>
@@ -1172,10 +1154,10 @@
             pizzaNotes: "",
             dessertNotes: "",
             timestamp: "",
-            status: "waiting", // waiting, preparing, ready, completed
+            status: "waiting",
             courses: {
                 antipasto: {
-                    status: "waiting", // waiting, preparing, ready, delivered
+                    status: "waiting",
                     notes: ""
                 },
                 pizza: {
@@ -1195,28 +1177,19 @@
         const APP_PIN = "1234"; // PIN fisso per l'accesso (da cambiare in produzione)
         let currentKitchenFilter = "all";
 
-        // Mostra splash screen all'avvio
+        // Avvia l'applicazione
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('splash-screen').style.display = 'none';
-                    
-                    // Verifica se è necessario mostrare la schermata di blocco
-                    if (localStorage.getItem('pizzeria-locked') === 'true') {
-                        showLockScreen();
-                    } else {
-                        document.querySelector('.container').style.display = 'block';
-                        
-                        // Se l'operatore è già registrato, mostra il menu principale
-                        if (currentOperator) {
-                            showMainScreen();
-                        } else {
-                            showScreen('operator');
-                        }
-                    }
-                }, 500);
-            }, 2000);
+            // Verifica se è necessario mostrare la schermata di blocco
+            if (localStorage.getItem('pizzeria-locked') === 'true') {
+                showLockScreen();
+            } else {
+                // Se l'operatore è già registrato, mostra il menu principale
+                if (currentOperator) {
+                    showMainScreen();
+                } else {
+                    showScreen('operator');
+                }
+            }
         });
 
         // Funzioni per il blocco schermo
@@ -1232,7 +1205,6 @@
                 document.getElementById('lock-screen').style.display = 'none';
                 document.querySelector('.container').style.display = 'block';
                 
-                // Se l'operatore è già registrato, mostra il menu principale
                 if (currentOperator) {
                     showMainScreen();
                 } else {
@@ -1252,9 +1224,8 @@
             showLockScreen();
         }
 
-        // Aggiungi tasto per bloccare l'applicazione
+        // Tasto per bloccare l'applicazione (Ctrl+L)
         document.addEventListener('keydown', function(event) {
-            // Ctrl + L per bloccare l'applicazione
             if (event.ctrlKey && event.key === 'l') {
                 event.preventDefault();
                 lockApplication();
@@ -1678,7 +1649,6 @@
                         "Attenzione", 
                         `Non puoi superare il numero di persone (${people})`,
                         function() {
-                            // Focus sul campo persone
                             document.getElementById('people-count').focus();
                         }
                     );
@@ -2083,7 +2053,6 @@
                     case 'vinoBiancoLitro': total += value * 8; break;
                     case 'vinoRossoMezzo': total += value * 4; break;
                     case 'vinoRossoLitro': total += value * 8; break;
-                    // L'acqua (key 'acquaNaturale' e 'acquaFrizzante') non viene aggiunta al totale
                 }
             }
             
@@ -2095,9 +2064,7 @@
                 showCustomAlert(
                     "Attenzione", 
                     "Nessun ordine registrato",
-                    function() {
-                        // Nessuna azione dopo la chiusura
-                    }
+                    function() {}
                 );
                 return;
             }
@@ -2160,18 +2127,14 @@
                 "Elimina Ordine", 
                 "Sei sicuro di voler eliminare definitivamente questo ordine?",
                 function() {
-                    // Azione di conferma
                     allOrders.splice(index, 1);
                     localStorage.setItem('pizzeria-orders', JSON.stringify(allOrders));
                     renderOrdersManagement();
                     
-                    // Mostra un messaggio di successo
                     showCustomAlert(
                         "Ordine Eliminato", 
                         "L'ordine è stato eliminato con successo!",
-                        function() {
-                            // Nessuna azione dopo la chiusura
-                        }
+                        function() {}
                     );
                 }
             );
@@ -2198,7 +2161,7 @@
 
         function switchTab(tab) {
             // Nascondi tutti i contenuti
-            document.querySelectorAll('.modal-content').forEach(content => {
+            document.querySelectorAll('.modal-content-section').forEach(content => {
                 content.classList.remove('active');
             });
             
